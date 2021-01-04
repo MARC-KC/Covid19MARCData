@@ -21,7 +21,7 @@ Sys.setenv('GITHUB_PAT' = gitcreds::gitcreds_get()[['password']])
 
 ## Setup ROxygen
 Delete the default NAMESPACE document  
-Run:
+Then run:
 ```{r}
 renv::install('devtools')
 devtools::document()
@@ -34,7 +34,12 @@ Adds the relevant lines to the package DESCTIPTION file:
 ```{r}
 usethis::use_package('renv')
 usethis::use_package('gitcreds')
+usethis::use_dev_package('marcR', remote = 'github::MARC-KC/marcR')
+usethis::use_pipe()
+usethis::use_package('here', type = 'Suggests')#for data-raw
+usethis::use_package('readr', type = 'Suggests')#for data-raw
 usethis::use_package('dplyr')
+
 usethis::use_package('lubridate')
 usethis::use_package('purrr')
 usethis::use_package('stringr')
@@ -43,8 +48,6 @@ usethis::use_package('glue')
 usethis::use_package('tidyr')
 usethis::use_package('crayon')
 usethis::use_package('rlang')
-usethis::use_dev_package('marcR', remote = 'github::MARC-KC/marcR')
-usethis::use_pipe()
 ```
 
 

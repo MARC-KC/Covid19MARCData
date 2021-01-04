@@ -14,6 +14,12 @@ Imports:
     renv,
     gitcreds,
     magrittr,
-    marcR (>= 0.0.0.9000)
-Remotes:  
+    marcR (>= 0.0.1),
+    dplyr
+Remotes: 
     github::MARC-KC/marcR
+Suggests: 
+    here,
+    readr
+Depends: 
+    R (>= 2.10)
