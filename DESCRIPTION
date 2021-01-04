@@ -16,10 +16,12 @@ Imports:
     magrittr,
     marcR (>= 0.0.1),
     dplyr
-Remotes: 
-    github::MARC-KC/marcR
+Remotes:  
+    github::MARC-KC/marcR,
+    github::MARC-KC/Covid19MARCInternal
 Suggests: 
     here,
-    readr
+    readr,
+    Covid19MARCInternal (>= 0.1.0)
 Depends: 
     R (>= 2.10)
