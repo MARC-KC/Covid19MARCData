@@ -29,3 +29,7 @@ Saline,HCC,MO,29195,22761,1,"Saline, MO"
 Wyandotte,MARC,KS,20209,165429,1,"Wyandotte, KS"
 Southern HCC,HCCRegion,MO,HCCSouth,153840,0,Southern HCC
 Northern HCC,HCCRegion,MO,HCCNorth,87166,0,Northern HCC
+EMR KC,EMRKC,,EMR_KC,2135004,0,EMResource KC
+EMR KC (In Kansas),StateEMRKC,KS,20EMR_KC,971847,0,Kansas (EMResource KC)
+EMR KC (In Missouri),StateEMRKC,MO,29EMR_KC,1163157,0,Missouri (EMResource KC)
+Douglas,Other,KS,170137,122259,0,"Douglas, KS"
