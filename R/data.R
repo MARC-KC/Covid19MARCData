@@ -23,3 +23,17 @@
 "jurisdictionTableCDT"
 
 
+#' @title GeoID Filters
+#'
+#' @description A named list containing different GeoID subsets based on jurisdictionTable.
+#'
+#' @format A named list:
+#' \describe{
+#'   \item{base}{Contains all MARC and all HCC GeoID's}
+#'   \item{MARC}{Contains all MARC GeoID's}
+#'   \item{HCC}{Contains all HCC GeoID's}
+#'   \item{restrictHospital}{Contains all restricted GeoID's due to lack of permission from hosptial to display their data. We have to have explicit permission from all hospitals to display data in those that have <=2 hospitals}
+#'   \item{okayHospital}{Contains all non-restricted GeoID's; Inverse of restrictHospital}
+#' }
+#' @source '/data-raw/CovidJurisdictions.csv'
+"GeoIDs"
