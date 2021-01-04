@@ -30,6 +30,7 @@ devtools::document()
 
 
 ## Add packages to imports:
+Adds the relevant lines to the package DESCTIPTION file:
 ```{r}
 usethis::use_package('renv')
 usethis::use_package('gitcreds')
@@ -45,5 +46,9 @@ usethis::use_package('rlang')
 usethis::use_dev_package('marcR', remote = 'github::MARC-KC/marcR')
 usethis::use_pipe()
 ```
+
+
+
+
 
 
