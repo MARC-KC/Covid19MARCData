@@ -13,6 +13,7 @@ RoxygenNote: 7.1.1
 Imports: 
     renv,
     gitcreds,
-    magrittr
-Remotes:
+    magrittr,
+    marcR (>= 0.0.0.9000)
+Remotes:  
     github::MARC-KC/marcR

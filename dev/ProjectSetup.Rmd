@@ -33,8 +33,17 @@ devtools::document()
 ```{r}
 usethis::use_package('renv')
 usethis::use_package('gitcreds')
+usethis::use_package('dplyr')
+usethis::use_package('lubridate')
+usethis::use_package('purrr')
+usethis::use_package('stringr')
+usethis::use_package('tibble')
+usethis::use_package('glue')
+usethis::use_package('tidyr')
+usethis::use_package('crayon')
+usethis::use_package('rlang')
+usethis::use_dev_package('marcR', remote = 'github::MARC-KC/marcR')
 usethis::use_pipe()
 ```
 
-Additionally, add the following packages to the Remotes section in the DESCRIPTION file:  
-github::MARC-KC/marcR
+
