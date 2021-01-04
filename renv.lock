@@ -394,6 +394,13 @@
       "Repository": "CRAN",
       "Hash": "361811f31f71f8a617a9a68bf63f1f42"
     },
+    "lubridate": {
+      "Package": "lubridate",
+      "Version": "1.7.9.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "5b5b02f621d39a499def7923a5aee746"
+    },
     "magrittr": {
       "Package": "magrittr",
       "Version": "2.0.1",
@@ -403,15 +410,15 @@
     },
     "marcR": {
       "Package": "marcR",
-      "Version": "0.0.0.9000",
+      "Version": "0.0.1",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "MARC-KC",
       "RemoteRepo": "marcR",
       "RemoteRef": "main",
-      "RemoteSha": "bc1860e11dea75844d1f340c51efa52b8918aed9",
-      "Hash": "2dde58ced446e9b3361b89355f7d0186"
+      "RemoteSha": "6ffb1a756e144d9da703bbc9173955a45e2536d6",
+      "Hash": "5c257c052e55925bc28acfa782d9b3f1"
     },
     "markdown": {
       "Package": "markdown",
