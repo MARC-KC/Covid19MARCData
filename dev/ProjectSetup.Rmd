@@ -30,10 +30,11 @@ devtools::document()
 
 
 ## Add packages to imports:
-
 ```{r}
 usethis::use_package('renv')
 usethis::use_package('gitcreds')
 usethis::use_pipe()
 ```
 
+Additionally, add the following packages to the Remotes section in the DESCRIPTION file:  
+github::MARC-KC/marcR

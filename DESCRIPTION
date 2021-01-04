@@ -14,3 +14,5 @@ Imports:
     renv,
     gitcreds,
     magrittr
+Remotes:
+    github::MARC-KC/marcR
