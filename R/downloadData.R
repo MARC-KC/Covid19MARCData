@@ -1,4 +1,31 @@
 
+
+#' @title Download MARC's COVID-19 Data
+#'
+#' @description Allows data to be downloaded from the MARC Data API with a
+#'   simple function.
+#'
+#' @param type What table should be downloaded? Select one of 'CDT', 'CDT_NewlyReported', or 'Hospital'.
+#' @param source What should the source of the data be? Defaults to MARCDataAPI. Other options are passed to `Covid19MARCInternal::downloadBaseDataInternal()` for internal use.
+#' @param date Default NULL. Only used by `Covid19MARCInternal::downloadBaseDataInternal()` for internal use.
+#'
+#' @details On the MARC internal network, the suggested Covid19MARCInternal
+#'   package can be used to access the same data as provided through the API
+#'   directly from the Publication and Production servers for testing purposes
+#'
+#' @return A tibble with the selected data
+#'
+#'
+#' @examples
+#' \dontrun{
+#'
+#' cdtData <- downloadBaseData(type = "CDT")
+#'
+#' cdtNRData <-  downloadBaseData(type = "CDT_NewlyReported")
+#'
+#'
+#' }
+#' @export
 downloadBaseData <- function(type = c("CDT", "CDT_NewlyReported", "Hospital"), source = "MARCDataAPI", date = NULL) {
 
     #Match Arguments
