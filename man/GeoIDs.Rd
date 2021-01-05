@@ -15,12 +15,12 @@ A named list:
 }
 }
 \source{
-'/data-raw/CovidJurisdictions.csv'
+'Covid19MARCInternal::GeoIDs'
 }
 \usage{
 GeoIDs
 }
 \description{
-A named list containing different GeoID subsets based on jurisdictionTable.
+A named list containing different GeoID subsets based on the jurisdictionTable in Covid19MARCInternal.
 }
 \keyword{datasets}
