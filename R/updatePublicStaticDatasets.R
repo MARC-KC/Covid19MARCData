@@ -1,3 +1,15 @@
+
+#' @title Check/Update Package Datasets
+#'
+#' @description Helper functions to check the dataset source
+#'   (Covid10MARCInternal) for package dataset updates.
+#'
+#' @details `checkPublicStaticDatasets()` is called on package attach but is
+#'   only ran if Covid19MARCInternal is installed.
+#'   `updatePublicStaticDatasets()` is a helper that will do the dataset update
+#'   if changes are detected
+#'
+#' @noRd
 checkPublicStaticDatasets <- function() {
 
     if (requireNamespace("Covid19MARCInternal", quietly = TRUE)) {
@@ -10,17 +22,17 @@ checkPublicStaticDatasets <- function() {
         if (!identical(jurisTable, jurisTableInternal) | !identical(popTable, popTableInternal) | !identical(GeoIDs, GeoIDsInternal)) {
             packageStartupMessage('Data sets need updated. Open the Covid10MARCData repository, run devtools::load_all(), then run updatePublicStaticDatasets()')
         } else {
-            packageStartupMessage('1')
+            # packageStartupMessage('1')
         }
     } else {
-        packageStartupMessage('2')
+        # packageStartupMessage('2')
     }
 
 
 }
 
 
-
+#' @noRd
 updatePublicStaticDatasets <- function() {
 
     if (requireNamespace("Covid19MARCInternal", quietly = TRUE)) {
