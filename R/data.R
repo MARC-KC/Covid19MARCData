@@ -9,23 +9,21 @@
 #'   \item{State}{Name of the state that the jurisdiciton is apart of; character: one of 'KS', 'MO', NA; [NVARCHAR](2)}
 #'   \item{GeoID}{Unique GeoID code for the jurisdiciton (unique identifier); character; [NVARCHAR](10)}
 #'   \item{Population}{Population in the jurisdiciton (source: ACS data); integer; [INT]}
-#'   \item{CDT_Jurisdiction}{TRUE/FALSE on if this Jurisdiciton is used to enter Cases, Deaths, Tests (CDT) data; logical; [BIT]}
-#'   \item{DisplayName}{Pretty jurisdiction name used for display purposes; character; [NVARCHAR](30)}
 #' }
 #'
-#' @details \code{jurisdictionTableCDT} is just a subset of \code{jurisdictionTable} filtered to where 'CDT_Jurisdiction' is TRUE
+#' @details \code{jurisTable} and \code{popTable} are just a subsets of \code{Covid19MARCInternal::jurisdictionTable} with specific columns filtered
 #'
-#' @source '/data-raw/CovidJurisdictions.csv'
+#' @source 'Covid19MARCInternal::jurisdictionTable'
 #' @rdname jurisTable
-"jurisdictionTable"
+"jurisTable"
 
 #' @rdname jurisTable
-"jurisdictionTableCDT"
+"popTable"
 
 
 #' @title GeoID Filters
 #'
-#' @description A named list containing different GeoID subsets based on jurisdictionTable.
+#' @description A named list containing different GeoID subsets based on the jurisdictionTable in Covid19MARCInternal.
 #'
 #' @format A named list:
 #' \describe{
@@ -35,5 +33,5 @@
 #'   \item{restrictHospital}{Contains all restricted GeoID's due to lack of permission from hosptial to display their data. We have to have explicit permission from all hospitals to display data in those that have <=2 hospitals}
 #'   \item{okayHospital}{Contains all non-restricted GeoID's; Inverse of restrictHospital}
 #' }
-#' @source '/data-raw/CovidJurisdictions.csv'
+#' @source 'Covid19MARCInternal::GeoIDs'
 "GeoIDs"
