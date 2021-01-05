@@ -9,11 +9,12 @@ checkPublicStaticDatasets <- function() {
         # if any not identical to package version provide startup message
         if (!identical(jurisTable, jurisTableInternal) | !identical(popTable, popTableInternal) | !identical(GeoIDs, GeoIDsInternal)) {
             packageStartupMessage('Data sets need updated. Open the Covid10MARCData repository, run devtools::load_all(), then run updatePublicStaticDatasets()')
+        } else {
+            packageStartupMessage('1')
         }
-        packageStartupMessage('1')
-
+    } else {
+        packageStartupMessage('2')
     }
-    packageStartupMessage('2')
 
 
 }
