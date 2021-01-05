@@ -41,8 +41,7 @@ usethis::use_package('renv')
 usethis::use_package('gitcreds')
 usethis::use_dev_package('marcR', remote = 'github::MARC-KC/marcR')
 usethis::use_pipe()
-usethis::use_package('here', type = 'Suggests')#for data-raw
-usethis::use_package('readr', type = 'Suggests')#for data-raw
+usethis::use_package('usethis', type = 'Suggests')#for dataset update using updatePublicStaticDatasets()
 usethis::use_package('dplyr')
 usethis::use_dev_package('Covid19MARCInternal', type = 'Suggests', remote = 'github::MARC-KC/Covid19MARCInternal')
 

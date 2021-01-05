@@ -20,8 +20,7 @@ Remotes:
     github::MARC-KC/marcR,
     github::MARC-KC/Covid19MARCInternal
 Suggests: 
-    here,
-    readr,
+    usethis,
     Covid19MARCInternal (>= 0.1.0)
 Depends: 
     R (>= 2.10)
