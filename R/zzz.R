@@ -1,3 +1,3 @@
-.onLoad <- function(...) {
+.onAttach <- function(...) {
     checkPublicStaticDatasets()
 }
