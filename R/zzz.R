@@ -1,3 +1,3 @@
-.onLoad <- function(...) {
-    checkPublicStaticDatasets()
-}
+# .onLoad <- function(...) {
+#     checkPublicStaticDatasets()
+# }
