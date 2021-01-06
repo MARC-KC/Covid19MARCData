@@ -1,6 +1,4 @@
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# FN - rollingXdayCalcs - Heavy Lifting for rolling averages ####
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 #' @title Rolling Averages and Totals for A X Day Period
 #'
 #' @description Calculates the rolling averages and totals over the last X days. This is currently a helper function for `rollAvgXDays()`.
@@ -63,14 +61,10 @@ rollingXdayCalcs <- function(df, dateCol, calcCol, Xdays = 7, total = TRUE, aver
 
     return(out)
 }
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# FN - rollAvgXDays - R Equivalent to the CDT and Hospital Rolling Summary Views ####
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 #' @title Create Rolling Summaries Given a Number of Days
@@ -167,4 +161,3 @@ rollSummaryXDays <- function(df, numDays = 7, varTable) {
     return(df)
 
 }
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
