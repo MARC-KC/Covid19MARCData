@@ -16,6 +16,18 @@
       "Repository": "CRAN",
       "Hash": "8f9ce74c6417d61f0782cbae5fd2b7b0"
     },
+    "Covid19MARCInternal": {
+      "Package": "Covid19MARCInternal",
+      "Version": "0.1.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "MARC-KC",
+      "RemoteRepo": "Covid19MARCInternal",
+      "RemoteRef": "main",
+      "RemoteSha": "3d15ad371f8e0c15e191213babe6c450119259b3",
+      "Hash": "4fbedc794677a7d3577967fa14af6255"
+    },
     "DBI": {
       "Package": "DBI",
       "Version": "1.1.0",
@@ -410,15 +422,15 @@
     },
     "marcR": {
       "Package": "marcR",
-      "Version": "0.0.1",
+      "Version": "0.3.0",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "MARC-KC",
       "RemoteRepo": "marcR",
       "RemoteRef": "main",
-      "RemoteSha": "6ffb1a756e144d9da703bbc9173955a45e2536d6",
-      "Hash": "5c257c052e55925bc28acfa782d9b3f1"
+      "RemoteSha": "02da671080f1218130a531082362b51bfcd3ed17",
+      "Hash": "ba1dd3abcfffdf321ccbd51149a41eac"
     },
     "markdown": {
       "Package": "markdown",
