@@ -12,7 +12,17 @@ Hub](https://marc2.org/covidhub/).
 
 ## How to use this repository?
 
-### If you just want to download the base datasets directly as a zipped set of csv files, [Click Here]()
+### If you just want to download the base datasets directly as a zipped set of csv files:
+
+<button>
+
+<p>
+
+<img src="man/figures/download.png" height="16pt"> Download CSVs
+
+</p>
+
+</button>
 
 These files are updated as part of our process for pushing updated data
 to our publication server so they should match the data in the MARC Data
