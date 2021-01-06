@@ -21,17 +21,17 @@ API.
 ### If you want access to the API directly, the GET URL’s are as follows:
 
   - Case, Death, and Test Data:
-    <https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest>
+    </br><https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest>
       - This is the time series of the back-updated Case, Death, Test
         data that MARC uses
   - Newly Reported Case, Death, and Test Data:
-    <https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported>
+    </br><https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported>
       - This is the time series of Newly Reported Case, Death, Test data
         that MARC uses to provide an estimate of how many Cases, Deaths,
         and Tests were reported in the last 24 hours similar to how the
         media reports these values. This data is not back-updated.
   - Hospital Data:
-    <https://gis2.marc2.org/MARCDataAPI/api/covidhospital>
+    </br><https://gis2.marc2.org/MARCDataAPI/api/covidhospital>
       - This is the time series of the back-updated Hospital data that
         MARC uses
   - **Note** The LastUpdated columns are in UTC time if downloading

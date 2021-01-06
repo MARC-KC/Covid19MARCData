@@ -22,11 +22,11 @@ These files are updated as part of our process for pushing updated data to our p
 
 ### If you want access to the API directly, the GET URL's are as follows:
 
-*  Case, Death, and Test Data: <https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest>  
+*  Case, Death, and Test Data: </br><https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest>  
     *  This is the time series of the back-updated Case, Death, Test data that MARC uses
-*  Newly Reported Case, Death, and Test Data: <https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported>
+*  Newly Reported Case, Death, and Test Data: </br><https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported>
     *  This is the time series of Newly Reported Case, Death, Test data that MARC uses to provide an estimate of how many Cases, Deaths, and Tests were reported in the last 24 hours similar to how the media reports these values. This data is not back-updated.
-*  Hospital Data: <https://gis2.marc2.org/MARCDataAPI/api/covidhospital>
+*  Hospital Data: </br><https://gis2.marc2.org/MARCDataAPI/api/covidhospital>
     *  This is the time series of the back-updated Hospital data that MARC uses
 *  **Note** The LastUpdated columns are in UTC time if downloading directly from the API. The time conversion to 'America/Chicago'/'Central' is implemented when downloading from the R package with the function `downloadBaseData()`
 
