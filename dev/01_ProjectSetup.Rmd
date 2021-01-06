@@ -44,16 +44,16 @@ usethis::use_pipe()
 usethis::use_package('usethis', type = 'Suggests')#for dataset update using updatePublicStaticDatasets()
 usethis::use_package('dplyr')
 usethis::use_dev_package('Covid19MARCInternal', type = 'Suggests', remote = 'github::MARC-KC/Covid19MARCInternal')
+usethis::use_package('rlang')
+usethis::use_package('tibble')
+usethis::use_package('purrr')
+usethis::use_package('glue')
+usethis::use_package('crayon')
 
 
 usethis::use_package('lubridate')
-usethis::use_package('purrr')
 usethis::use_package('stringr')
-usethis::use_package('tibble')
-usethis::use_package('glue')
 usethis::use_package('tidyr')
-usethis::use_package('crayon')
-usethis::use_package('rlang')
 ```
 
 
