@@ -35,7 +35,7 @@ downloadBaseData <- function(type = c("CDT", "CDT_NewlyReported", "Hospital"), s
 
         #Download Case, Death, Test Data
         if (type == "CDT") {
-            cat(crayon::yellow("Downloading Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest\n"))
+            message(crayon::yellow("Downloading Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest\n"))
             out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest') %>%
                 dplyr::mutate(Date = as.Date(Date),
                               LastUpdated = lubridate::as_datetime(LastUpdated),
@@ -44,16 +44,16 @@ downloadBaseData <- function(type = c("CDT", "CDT_NewlyReported", "Hospital"), s
 
         #Download the Newly Reported Case, Death, Test Data
         if (type == "CDT_NewlyReported") {
-            cat(crayon::yellow("Downloading Newly Reported Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestNewlyReported\n"))
+            message(crayon::yellow("Downloading Newly Reported Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestNewlyReported\n"))
             out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestNewlyReported') %>%
                 dplyr::mutate(Date = as.Date(Date),
                               LastUpdated = lubridate::as_datetime(LastUpdated),
                               LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))
         }
 
-        #Download the Newly Reported Case, Death, Test Data
+        #Download the Hospital Data
         if (type == "Hospital") {
-            cat(crayon::yellow("Downloading Hospital data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidhospital\n"))
+            message(crayon::yellow("Downloading Hospital data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidhospital\n"))
             out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidhospital') %>%
                 dplyr::mutate(Date = as.Date(Date))
         }
