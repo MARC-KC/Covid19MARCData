@@ -14,7 +14,7 @@ Hub](https://marc2.org/covidhub/).
 
 ### If you just want to download the base datasets directly as a zipped set of csv files:
 
-<img src="man/figures/downloadCSVs.png" height="50px">
+[<img src="man/figures/downloadCSVs.png" height="50px">](http://marc2.org/coviddata/regionalcovid_datadictionary.xlsx)
 
 These files are updated as part of our process for pushing updated data
 to our publication server so they should match the data in the MARC Data
