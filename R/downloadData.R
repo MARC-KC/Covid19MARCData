@@ -51,6 +51,13 @@ downloadBaseData <- function(type = c("CDT", "CDT_NewlyReported", "Hospital"), s
                               LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))
         }
 
+        #Download the Newly Reported Case, Death, Test Data
+        if (type == "Hospital") {
+            cat(crayon::yellow("Downloading Hospital data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidhospital\n"))
+            out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidhospital') %>%
+                dplyr::mutate(Date = as.Date(Date))
+        }
+
 
 
     } else {
