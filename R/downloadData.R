@@ -44,8 +44,8 @@ downloadBaseData <- function(type = c("CDT", "CDT_NewlyReported", "Hospital"), s
 
         #Download the Newly Reported Case, Death, Test Data
         if (type == "CDT_NewlyReported") {
-            message(crayon::yellow("Downloading Newly Reported Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestNewlyReported\n"))
-            out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestNewlyReported') %>%
+            message(crayon::yellow("Downloading Newly Reported Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported\n"))
+            out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported') %>%
                 dplyr::mutate(Date = as.Date(Date),
                               LastUpdated = lubridate::as_datetime(LastUpdated),
                               LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))
