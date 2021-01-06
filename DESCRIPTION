@@ -23,10 +23,8 @@ Imports:
     crayon,
     stringr
 Remotes: 
-    github::MARC-KC/marcR,
-    github::MARC-KC/Covid19MARCInternal
+    github::MARC-KC/marcR
 Suggests: 
-    usethis,
-    Covid19MARCInternal (>= 0.1.0)
+    usethis
 Depends: 
     R (>= 2.10)
