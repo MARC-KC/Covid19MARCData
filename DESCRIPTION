@@ -20,7 +20,8 @@ Imports:
     tibble,
     purrr,
     glue,
-    crayon
+    crayon,
+    stringr
 Remotes: 
     github::MARC-KC/marcR,
     github::MARC-KC/Covid19MARCInternal
