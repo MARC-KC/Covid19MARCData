@@ -18,15 +18,15 @@
     },
     "Covid19MARCInternal": {
       "Package": "Covid19MARCInternal",
-      "Version": "0.2.0",
+      "Version": "0.2.1",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "MARC-KC",
       "RemoteRepo": "Covid19MARCInternal",
       "RemoteRef": "main",
-      "RemoteSha": "ee833a8dbbb1a593a43aab9248c1281861379e28",
-      "Hash": "28f6d06a4df01a0f9ef3ff7c52db2880"
+      "RemoteSha": "ae61f09ba2cd89fa6488254076c24e46e3aab6d2",
+      "Hash": "a8cc765e99b10b67c92bb4b2fe06173c"
     },
     "DBI": {
       "Package": "DBI",

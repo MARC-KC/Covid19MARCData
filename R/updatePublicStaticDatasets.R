@@ -17,9 +17,13 @@ checkPublicStaticDatasets <- function() {
         jurisTableInternal <- dplyr::select(Covid19MARCInternal::jurisdictionTable, Jurisdiction, Region, State, GeoID)
         popTableInternal <- dplyr::select(Covid19MARCInternal::jurisdictionTable, GeoID, Population)
         GeoIDsInternal <- Covid19MARCInternal::GeoIDs
+        prettyJurisdictionsInternal <- Covid19MARCInternal::prettyJurisdictions
 
         # if any not identical to package version provide startup message
-        if (!identical(jurisTable, jurisTableInternal) | !identical(popTable, popTableInternal) | !identical(GeoIDs, GeoIDsInternal)) {
+        if (!identical(jurisTable, jurisTableInternal) |
+            !identical(popTable, popTableInternal) |
+            !identical(GeoIDs, GeoIDsInternal)  |
+            !identical(prettyJurisdictions, prettyJurisdictionsInternal)) {
             packageStartupMessage('Data sets need updated. Open the Covid10MARCData repository, run devtools::load_all(), then run updatePublicStaticDatasets()')
         } else {
             # packageStartupMessage('1')
@@ -40,6 +44,7 @@ updatePublicStaticDatasets <- function() {
         jurisTable <- dplyr::select(Covid19MARCInternal::jurisdictionTable, Jurisdiction, Region, State, GeoID)
         popTable <- dplyr::select(Covid19MARCInternal::jurisdictionTable, GeoID, Population)
         GeoIDs <- Covid19MARCInternal::GeoIDs
+        prettyJurisdictions <- Covid19MARCInternal::prettyJurisdictions
 
 
         if (!requireNamespace("usethis", quietly = TRUE)) {
@@ -54,6 +59,7 @@ updatePublicStaticDatasets <- function() {
         usethis::use_data(jurisTable,
                           popTable,
                           GeoIDs,
+                          prettyJurisdictions,
                           overwrite = TRUE)
         message('Make sure documentation for changes is up to date in /R/data.R, then document and rebuild package')
         #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

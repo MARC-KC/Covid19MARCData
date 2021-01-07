@@ -35,3 +35,22 @@
 #' }
 #' @source 'Covid19MARCInternal::GeoIDs'
 "GeoIDs"
+
+
+#' @title Pretty Jurisdictions
+#'
+#' @description This dataset is a pure Power Bi helper for making slicers and
+#'   jurisdiciton ordering
+#'
+#' @format
+#' \describe{
+#'   \item{Site}{Is this for the 'MARC' or the 'HCC' Hub?}
+#'   \item{GeoID}{Unique GeoID code for the jurisdiciton (unique identifier)}
+#'   \item{NiceName}{Formatted jurisdiciton name}
+#'   \item{DisplayOrder}{The order for display of the Jurisdictions (larger combined regions first)}
+#'   \item{NiceUpperLevel}{Formatted overarching category for the jurisdicion}
+#'   \item{ICUBedsDisclaimer}{Adds a 'Not Reported' card instead of displaying a blank figure for jurisdicitons that are not reporting ICU beds (Not sure this is used anymore)}
+#'   \item{SourceLocation}{URL for the data source.}
+#' }
+#' @source '/data-raw/prettyJurisdictions.csv'
+"prettyJurisdictions"
