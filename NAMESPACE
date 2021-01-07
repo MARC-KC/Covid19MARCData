@@ -2,6 +2,7 @@
 
 export("%>%")
 export(baseDaysComparison)
+export(downloadAllCovidAPIData)
 export(downloadMARCCovidData)
 export(list2CSV)
 export(mostRecentGivenTime)

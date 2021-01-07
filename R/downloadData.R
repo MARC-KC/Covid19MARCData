@@ -59,3 +59,53 @@ downloadMARCCovidData<- function(dataset = c("CDT", "CDT_NewlyReported", "Hospit
 }
 
 
+#' @title Download All of MARC's COVID-19 Data
+#'
+#' @description Allows all the COVID-19 data to be downloaded from the MARC Data
+#'   API with a simple function. This is a helper function for the data pipeline
+#'   so that for testing purposes, data can be ingested directly from MARC
+#'   internal SQL servers and not hard coded to the API data.
+#'
+#'
+#' @return A list of tibbles containing the COVID-19 data
+#'
+#'
+#' @examples
+#' \dontrun{
+#'
+#' downloadAllCovidAPIData()
+#'
+#' }
+#' @export
+downloadAllCovidAPIData <- function() {
+
+    cdtData <- downloadMARCCovidData(dataset = "CDT") %>%
+        dplyr::filter(GeoID %in% GeoIDs[['base']])
+
+    cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported") %>%
+        dplyr::filter(GeoID %in% GeoIDs[['base']])
+
+    hospData <-  downloadMARCCovidData(dataset = "Hospital") %>%
+        dplyr::filter(GeoID %in% GeoIDs[['base']])
+
+    out <- list('cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData)
+
+    return(out)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

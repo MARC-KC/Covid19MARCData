@@ -1,9 +1,9 @@
 
 
 #Variables
+baseDataList <- downloadAllCovidAPIData()
 lagDays = 10
 lagDaysHosp = 2
-
 
 
 
@@ -14,14 +14,11 @@ lagDaysHosp = 2
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Load in CDT and Hospital Base Data ####
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-cdtData <- downloadMARCCovidData(dataset = "CDT") %>%
-    dplyr::filter(GeoID %in% GeoIDs[['base']])
 
-cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported") %>%
-    dplyr::filter(GeoID %in% GeoIDs[['base']])
 
-hospData <-  downloadMARCCovidData(dataset = "Hospital") %>%
-    dplyr::filter(GeoID %in% GeoIDs[['base']])
+list2env(baseDataList, env = rlang::current_env())
+
+
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
