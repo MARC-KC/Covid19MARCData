@@ -21,7 +21,9 @@ Imports:
     purrr,
     glue,
     crayon,
-    stringr
+    stringr,
+    lubridate,
+    tidyr
 Remotes: 
     github::MARC-KC/marcR
 Suggests: 
