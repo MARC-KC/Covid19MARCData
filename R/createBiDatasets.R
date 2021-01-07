@@ -17,7 +17,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
     # Combine Hospital and CDT Base Data ####
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     cdtHospData <- dplyr::full_join(cdtData, hospData, by = c("GeoID", "Date")) %>%
-        marcR::coalesceJoin() %>%
+        marcR::coalesceJoin(showMessage = FALSE) %>%
         dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
         dplyr::select(
             Jurisdiction, State, GeoID, Region, Date,

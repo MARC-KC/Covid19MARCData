@@ -2,7 +2,7 @@
 
 #' @export
 list2CSV <- function(objectList, outputFolder) {
-    message(crayon::green("Exporting", length(objectList), paste0("csv files to '", outputFolder)))
+    message(crayon::yellow("Exporting", length(objectList), paste0("csv files to '", outputFolder)))
     if (dir.exists(outputFolder)) unlink(outputFolder, recursive = TRUE) #if folder exists, delete it
     dir.create(outputFolder, recursive = TRUE, showWarnings = FALSE) #create the directory
     purrr::walk(seq_along(objectList), ~{
