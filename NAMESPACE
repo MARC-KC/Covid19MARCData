@@ -2,7 +2,7 @@
 
 export("%>%")
 export(baseDaysComparison)
-export(downloadBaseData)
+export(downloadMARCCovidData)
 export(list2CSV)
 export(mostRecentGivenTime)
 export(rollSummaryXDays)

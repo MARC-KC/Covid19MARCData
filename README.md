@@ -39,7 +39,7 @@ API.
   - **Note** The LastUpdated columns are in UTC time if downloading
     directly from the API. The time conversion to
     ‘America/Chicago’/‘Central’ is implemented when downloading
-    from the R package with the function `downloadBaseData()`
+    from the R package with the function `downloadMARCCovidData()`
 
 ### If you want to implement the API or the R package into your pipeline using R
 
@@ -88,13 +88,13 @@ different `type` argument:
 
 ``` r
 #Case, Death, and Test Data
-cdtData <- downloadBaseData(type = "CDT")
+cdtData <- downloadMARCCovidData(dataset = "CDT")
 
 #Newly Reported Case, Death, and Test Data
-cdtNRData <-  downloadBaseData(type = "CDT_NewlyReported")
+cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported")
 
 #Hospital Data
-hospData <-  downloadBaseData(type = "Hospital")
+hospData <-  downloadMARCCovidData(dataset = "Hospital")
 ```
 
 ## Where does the data come from?

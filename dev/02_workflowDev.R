@@ -14,13 +14,13 @@ lagDaysHosp = 2
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Load in CDT and Hospital Base Data ####
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-cdtData <- downloadBaseData(type = "CDT") %>%
+cdtData <- downloadMARCCovidData(dataset = "CDT") %>%
     dplyr::filter(GeoID %in% GeoIDs[['base']])
 
-cdtNRData <-  downloadBaseData(type = "CDT_NewlyReported") %>%
+cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported") %>%
     dplyr::filter(GeoID %in% GeoIDs[['base']])
 
-hospData <-  downloadBaseData(type = "Hospital") %>%
+hospData <-  downloadMARCCovidData(dataset = "Hospital") %>%
     dplyr::filter(GeoID %in% GeoIDs[['base']])
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
