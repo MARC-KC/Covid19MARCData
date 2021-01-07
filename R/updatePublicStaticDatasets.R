@@ -55,7 +55,7 @@ updatePublicStaticDatasets <- function() {
                           popTable,
                           GeoIDs,
                           overwrite = TRUE)
-        messsage('Make sure documentation for changes is up to date in /R/data.R, then document and rebuild package')
+        message('Make sure documentation for changes is up to date in /R/data.R, then document and rebuild package')
         #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     }
