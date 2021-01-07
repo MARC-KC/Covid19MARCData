@@ -12,13 +12,9 @@ lagDaysHosp = 2
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    # Load in CDT and Hospital Base Data ####
+# Load in the base data to the environment from a list ####
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 list2env(baseDataList, env = rlang::current_env())
-
-
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -51,7 +47,7 @@ cdtHospData <- dplyr::full_join(cdtData, hospData, by = c("GeoID", "Date")) %>%
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Calculate Rolling Average Tables ####
-cat(crayon::blue("Calculating 7 and 14 day rolling averages.\n"))
+message(crayon::blue("Calculating 7 and 14 day rolling averages.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 varTable <- tibble::tribble(
     ~variable,                  ~Avg,         ~Total,     ~CalcString,
@@ -83,7 +79,7 @@ cdtHosp14DayRollingData <- rollSummaryXDays(df = cdtHospData, numDays = 14, varT
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Add Base Tables ####
-cat(crayon::blue("Exporting base CDT data.\n"))
+message(crayon::blue("Exporting base CDT data.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 bi_CDT_TimeSeries <- cdtData
 
@@ -97,7 +93,7 @@ bi_CDT_NewlyReported <- cdtNRData %>% marcR::groupby_rank(GeoID, rankby = Date, 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Full 7 Day  Rolling Summary With and Without Lag ####
-cat(crayon::blue("Exporting 7 day rolling averages and totals.\n"))
+message(crayon::blue("Exporting 7 day rolling averages and totals.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 bi_7DayRolling <-
     dplyr::left_join(dplyr::mutate(cdtHosp7DayRollingData,
@@ -131,7 +127,7 @@ bi_7DayRolling <-
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Weekly Thinned 7 Day Rolling With and Without Lag ####
-cat(crayon::blue("Exporting thinned 7 day rolling averages and totals.\n"))
+message(crayon::blue("Exporting thinned 7 day rolling averages and totals.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # bi_7DayRollingThin <- bi_7DayRolling %>%
 #     dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
@@ -167,7 +163,7 @@ bi_7DayRollingThinLagHosp <- bi_7DayRolling %>%
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # 7 Day Comparison - Last 6 Weeks and Most Recent With and Without Lag ####
-cat(crayon::blue("Exporting 7 day comparison sheets.\n"))
+message(crayon::blue("Exporting 7 day comparison sheets.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 measureTable <- tibble::tribble(
     ~measureName,                    ~upGood,
@@ -211,7 +207,7 @@ bi_7DayComparison_Last6Weeks_Lag <- baseWeeklyComparisonData %>% dplyr::filter(D
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Full Hospital Data WIth Calculations And Most Recent ####
-cat(crayon::blue("Exporting base hospital data.\n"))
+message(crayon::blue("Exporting base hospital data.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 bi_HospitalDailyData <- hospData %>%
     dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
@@ -255,7 +251,7 @@ bi_HospitalMostRecent <- bi_HospitalDailyData %>%
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Testing Page tables ####
 # Used to create the tables for the tesing page. Mainly the need for negative vs positive tests
-cat(crayon::blue("Exporting tables for testing page.\n"))
+message(crayon::blue("Exporting tables for testing page.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 varTable <- tibble::tribble(
     ~variable,                  ~Avg,         ~Total,     ~CalcString,
@@ -288,7 +284,7 @@ bi_TestingPage7DayRollingThinLag <- ct7DayRollingData %>%
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Jurisdiction Bar Charts given time scenarios ####
-cat(crayon::blue("Exporting jurisdiction bar chart data.\n"))
+message(crayon::blue("Exporting jurisdiction bar chart data.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 mostRecentGivenHelperTable <- tibble::tribble(
     ~datasetName,         ~days, ~lagDays, ~keep,
@@ -327,7 +323,7 @@ bi_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable, function
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PrettyJurisdictions ####
 # Used as a Bridge table in the Power BI relationships
-cat(crayon::blue("Exporting jurisdiction bridge table with the formatted names.\n"))
+message(crayon::blue("Exporting jurisdiction bridge table with the formatted names.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 bi_PrettyJurisdictions_MARC <- prettyJurisdictions %>% dplyr::filter(Site == 'MARC') %>% dplyr::select(-Site)
@@ -339,7 +335,7 @@ bi_PrettyJurisdictions_HCC <- prettyJurisdictions %>% dplyr::filter(Site == 'HCC
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # HelperTable ####
 # Used to help create measures in Power BI
-cat(crayon::blue("Exporting helper table for PowerBI measures.\n"))
+message(crayon::blue("Exporting helper table for PowerBI measures.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 bi_HelperTable <- tibble::tribble(
     ~HelperID,          ~DateTime,
@@ -356,49 +352,6 @@ out <- mget(stringr::str_subset(ls(), "^bi_"))
 
 
 
-
-# outputFolderName = '//KCJazz/GIS/DataDevelopment/HumanServices/COVID-19/Outputs/PipelineDataOutputs/PublishData'
-#
-#
-#
-#
-# #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# # Export Power Bi datasets to CSVs ####
-# #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# biObjects <- ls() %>% stringr::str_subset("^bi_")
-#
-# cat(crayon::green("Exporting", length(biObjects), paste0("csv files to '", outputFolderName, "\n")))
-# if (dir.exists(outputFolderName)) unlink(outputFolderName, recursive = TRUE)
-# dir.create(outputFolderName, recursive = TRUE, showWarnings = FALSE)
-# purrr::walk(seq_along(biObjects), ~{
-#     fileName <- biObjects[.x] %>% stringr::str_remove("^bi_")
-#     cat(crayon::blue("Saving file:", paste0(fileName, ".csv"), paste0("(", .x, "/", length(biObjects), ")\n")))
-#     readr::write_csv(x = eval(parse(text=paste0("as.data.frame(", biObjects[.x], ")"))), file = file.path(outputFolderName, paste0(fileName, ".csv")), na = "")
-# })
-# cat(crayon::green("Export Completed Successfully\n"))
-# #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-
-
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Export List of Datasets to CSVs ####
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-# list2CSV <- function(objectList, outputFolder) {
-#     message(crayon::green("Exporting", length(objectList), paste0("csv files to '", outputFolder, "\n")))
-#     if (dir.exists(outputFolder)) unlink(outputFolder, recursive = TRUE) #if folder exists, delete it
-#     dir.create(outputFolder, recursive = TRUE, showWarnings = FALSE) #create the directory
-#     purrr::walk(seq_along(objectList), ~{
-#         fileName <- stringr::str_remove(names(objectList)[.x], "^bi_")
-#         message(crayon::blue("Saving file:", paste0(fileName, ".csv"), paste0("(", .x, "/", length(objectList), ")\n")))
-#         readr::write_csv(x = objectList[[.x]], file = file.path(outputFolder, paste0(fileName, ".csv")), na = "")
-#     })
-#     message(crayon::green("Export Completed Successfully\n"))
-# }
 
 objectList = out
 outputFolder = '//KCJazz/GIS/DataDevelopment/HumanServices/COVID-19/Outputs/PipelineDataOutputs/PublishData'
