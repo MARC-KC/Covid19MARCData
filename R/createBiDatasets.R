@@ -41,7 +41,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Calculate Rolling Average Tables ####
-    message(crayon::blue("Calculating 7 and 14 day rolling averages.\n"))
+    message(crayon::blue("Calculating 7 and 14 day rolling averages."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     varTable <- tibble::tribble(
         ~variable,                  ~Avg,         ~Total,     ~CalcString,
@@ -73,7 +73,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Add Base Tables ####
-    message(crayon::blue("Exporting base CDT data.\n"))
+    message(crayon::blue("Exporting base CDT data."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     bi_CDT_TimeSeries <- cdtData
 
@@ -87,7 +87,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Full 7 Day  Rolling Summary With and Without Lag ####
-    message(crayon::blue("Exporting 7 day rolling averages and totals.\n"))
+    message(crayon::blue("Exporting 7 day rolling averages and totals."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     bi_7DayRolling <-
         dplyr::left_join(dplyr::mutate(cdtHosp7DayRollingData,
@@ -121,7 +121,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Weekly Thinned 7 Day Rolling With and Without Lag ####
-    message(crayon::blue("Exporting thinned 7 day rolling averages and totals.\n"))
+    message(crayon::blue("Exporting thinned 7 day rolling averages and totals."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # bi_7DayRollingThin <- bi_7DayRolling %>%
     #     dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
@@ -157,7 +157,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # 7 Day Comparison - Last 6 Weeks and Most Recent With and Without Lag ####
-    message(crayon::blue("Exporting 7 day comparison sheets.\n"))
+    message(crayon::blue("Exporting 7 day comparison sheets."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     measureTable <- tibble::tribble(
         ~measureName,                    ~upGood,
@@ -201,7 +201,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Full Hospital Data WIth Calculations And Most Recent ####
-    message(crayon::blue("Exporting base hospital data.\n"))
+    message(crayon::blue("Exporting base hospital data."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     bi_HospitalDailyData <- hospData %>%
         dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
@@ -245,7 +245,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Testing Page tables ####
     # Used to create the tables for the tesing page. Mainly the need for negative vs positive tests
-    message(crayon::blue("Exporting tables for testing page.\n"))
+    message(crayon::blue("Exporting tables for testing page."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     varTable <- tibble::tribble(
         ~variable,                  ~Avg,         ~Total,     ~CalcString,
@@ -278,7 +278,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Jurisdiction Bar Charts given time scenarios ####
-    message(crayon::blue("Exporting jurisdiction bar chart data.\n"))
+    message(crayon::blue("Exporting jurisdiction bar chart data."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     mostRecentGivenHelperTable <- tibble::tribble(
         ~datasetName,         ~days, ~lagDays, ~keep,
@@ -317,7 +317,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # PrettyJurisdictions ####
     # Used as a Bridge table in the Power BI relationships
-    message(crayon::blue("Exporting jurisdiction bridge table with the formatted names.\n"))
+    message(crayon::blue("Exporting jurisdiction bridge table with the formatted names."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     bi_PrettyJurisdictions_MARC <- prettyJurisdictions %>% dplyr::filter(Site == 'MARC') %>% dplyr::select(-Site)
@@ -329,7 +329,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # HelperTable ####
     # Used to help create measures in Power BI
-    message(crayon::blue("Exporting helper table for PowerBI measures.\n"))
+    message(crayon::blue("Exporting helper table for PowerBI measures."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     bi_HelperTable <- tibble::tribble(
         ~HelperID,          ~DateTime,

@@ -359,7 +359,7 @@ lagDays = 10
 lagDaysHosp = 2
 
 
-objectList = createBiDatasets(baseDataList = downloadAllCovidAPIData(), ladDays = 10, lagDaysHosp = 2)
+objectList = createBiDatasets(baseDataList = downloadAllCovidAPIData(), lagDays = 10, lagDaysHosp = 2)
 outputFolder = '//KCJazz/GIS/DataDevelopment/HumanServices/COVID-19/Outputs/PipelineDataOutputs/PublishData'
 list2CSV(objectList, outputFolder)
 

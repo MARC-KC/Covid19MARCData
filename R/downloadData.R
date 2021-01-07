@@ -28,7 +28,7 @@ downloadMARCCovidData<- function(dataset = c("CDT", "CDT_NewlyReported", "Hospit
 
     #Download Case, Death, Test Data
     if (dataset == "CDT") {
-        message(crayon::yellow("Downloading Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest\n"))
+        message(crayon::yellow("Downloading Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest"))
         out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest') %>%
             dplyr::mutate(Date = as.Date(Date),
                           LastUpdated = lubridate::as_datetime(LastUpdated),
@@ -37,7 +37,7 @@ downloadMARCCovidData<- function(dataset = c("CDT", "CDT_NewlyReported", "Hospit
 
     #Download the Newly Reported Case, Death, Test Data
     if (dataset == "CDT_NewlyReported") {
-        message(crayon::yellow("Downloading Newly Reported Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported\n"))
+        message(crayon::yellow("Downloading Newly Reported Case, Death, and Test data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported"))
         out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported') %>%
             dplyr::mutate(Date = as.Date(Date),
                           LastUpdated = lubridate::as_datetime(LastUpdated),
@@ -46,7 +46,7 @@ downloadMARCCovidData<- function(dataset = c("CDT", "CDT_NewlyReported", "Hospit
 
     #Download the Hospital Data
     if (dataset == "Hospital") {
-        message(crayon::yellow("Downloading Hospital data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidhospital\n"))
+        message(crayon::yellow("Downloading Hospital data from the MARC Data API: https://gis2.marc2.org/MARCDataAPI/api/covidhospital"))
         out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/MARCDataAPI/api/covidhospital') %>%
             dplyr::mutate(Date = as.Date(Date))
     }
