@@ -87,6 +87,8 @@ cat(crayon::blue("Exporting base CDT data.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 bi_CDT_TimeSeries <- cdtData %>%
     dplyr::filter(GeoID %in% GeoIDs[['base']])
+
+bi_CDT_MostRecent <- bi_CDT_TimeSeries %>% marcR::groupby_rank(GeoID, rankby = Date, filterIDs = 1)
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -288,21 +290,20 @@ bi_TestingPage7DayRollingThinLag <- ct7DayRollingData %>%
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Jurisdiction Bar Charts given time scenarios ####
-# Used as a Bridge table in the Power BI relationships
 cat(crayon::blue("Exporting jurisdiction bar chart data.\n"))
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 mostRecentGivenHelperTable <- tibble::tribble(
     ~datasetName,         ~days, ~lagDays, ~keep,
-    "cdtHospSumData",     7,     lagDays,  "Both",
-    "cdtHospSumData",     14,    lagDays,  "Both",
-    "cdtHospSumData",     30,    lagDays,  "Both",
-    "cdtHospSumData",     60,    lagDays,  "Both",
-    "cdtHospSumData",     90,    lagDays,  "Both",
+    "cdtHospData",        7,     lagDays,  "Both",
+    "cdtHospData",        14,    lagDays,  "Both",
+    "cdtHospData",        30,    lagDays,  "Both",
+    "cdtHospData",        60,    lagDays,  "Both",
+    "cdtHospData",        90,    lagDays,  "Both",
     "bi_CDT_MostRecent",  NA,    NA,       "Both"
 )
 
-bi_JurisdictionBarCharts <- pmap_dfr(mostRecentGivenHelperTable, function(datasetName, days, lagDays, keep, ...) {
-    dataset <- eval(sym(datasetName))
+bi_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable, function(datasetName, days, lagDays, keep, ...) {
+    dataset <- eval(rlang::sym(datasetName))
 
     out <- mostRecentGivenTime(df = dataset, days=days, lagDays=lagDays)
 
@@ -319,5 +320,73 @@ bi_JurisdictionBarCharts <- pmap_dfr(mostRecentGivenHelperTable, function(datase
 })
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# PrettyJurisdictions ####
+# Used as a Bridge table in the Power BI relationships
+cat(crayon::blue("Exporting jurisdiction bridge table with the formatted names.\n"))
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+bi_PrettyJurisdictions_MARC <- Covid19MARCInternal::prettyJurisdictions %>% dplyr::filter(Site == 'MARC') %>% dplyr::select(-Site)
+bi_PrettyJurisdictions_HCC <- Covid19MARCInternal::prettyJurisdictions %>% dplyr::filter(Site == 'HCC') %>% dplyr::select(-Site)
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# HelperTable ####
+# Used to help create measures in Power BI
+cat(crayon::blue("Exporting helper table for PowerBI measures.\n"))
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+bi_HelperTable <- tibble::tribble(
+    ~HelperID,          ~DateTime,
+    "LastExport",         Sys.time()
+)
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+outputFolderName = '//KCJazz/GIS/DataDevelopment/HumanServices/COVID-19/Outputs/PipelineDataOutputs/PublishData'
+
+
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Export Power Bi datasets to CSVs ####
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+biObjects <- ls() %>% stringr::str_subset("^bi_")
+
+cat(crayon::green("Exporting", length(biObjects), paste0("csv files to '", outputFolderName, "\n")))
+if (dir.exists(outputFolderName)) unlink(outputFolderName, recursive = TRUE)
+dir.create(outputFolderName, recursive = TRUE, showWarnings = FALSE)
+purrr::walk(seq_along(biObjects), ~{
+    fileName <- biObjects[.x] %>% stringr::str_remove("^bi_")
+    cat(crayon::blue("Saving file:", paste0(fileName, ".csv"), paste0("(", .x, "/", length(biObjects), ")\n")))
+    readr::write_csv(x = eval(parse(text=paste0("as.data.frame(", biObjects[.x], ")"))), file = file.path(outputFolderName, paste0(fileName, ".csv")), na = "")
+})
+cat(crayon::green("Export Completed Successfully\n"))
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
