@@ -3,6 +3,7 @@
 export("%>%")
 export(baseDaysComparison)
 export(downloadBaseData)
+export(list2CSV)
 export(mostRecentGivenTime)
 export(rollSummaryXDays)
 importFrom(magrittr,"%>%")
