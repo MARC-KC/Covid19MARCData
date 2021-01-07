@@ -18,16 +18,15 @@
     },
     "Covid19MARCInternal": {
       "Package": "Covid19MARCInternal",
-      "Version": "0.1.0",
+      "Version": "0.2.0",
       "Source": "GitHub",
-      "Remotes": "github::MARC-KC/marcR",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "Covid19MARCInternal",
       "RemoteUsername": "MARC-KC",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "8956f0ccd041975afc6a99f315ecd1958fa3f1a1",
-      "Hash": "124a90544ed0b3436be265183a29646a"
+      "RemoteRepo": "Covid19MARCInternal",
+      "RemoteRef": "main",
+      "RemoteSha": "ee833a8dbbb1a593a43aab9248c1281861379e28",
+      "Hash": "28f6d06a4df01a0f9ef3ff7c52db2880"
     },
     "DBI": {
       "Package": "DBI",
@@ -558,6 +557,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "ed95895886dab6d2a584da45503555da"
+    },
+    "readr": {
+      "Package": "readr",
+      "Version": "1.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2639976851f71f330264a9c9c3d43a61"
     },
     "rematch2": {
       "Package": "rematch2",
