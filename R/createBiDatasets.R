@@ -7,15 +7,15 @@
 #'
 #' @param baseDataList A named list of data.frames containing the base data. See
 #'   details for more information. Defaults to the return from
-#'   `downloadAllCovidAPIData()`
+#'   \code{downloadAllCovidAPIData()}
 #' @param lagDaysCDT Number of days to lag the Case, Death, Test data. Defaults
 #'   to the value used by the Hub (10).
 #' @param lagDaysHosp Number of days to lag the Hospital data. Defaults to the
 #'   value used by the Hub (2).
 
-#' @details `baseDataList` should contain a named list of the base data.frames. These
+#' @details \code{baseDataList} should contain a named list of the base data.frames. These
 #'   are available through the MARC data API through the helpful functions
-#'   `downloadMARCCovidData()` and `downloadAllCovidAPIData()` This should be 3
+#'   \code{downloadMARCCovidData()} and \code{downloadAllCovidAPIData()} This should be 3
 #'   data.frames with he following names:
 #' \describe{
 #'   \item{cdtData}{Case, Death, and Test Data}
