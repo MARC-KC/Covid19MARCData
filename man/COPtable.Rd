@@ -15,7 +15,7 @@ COPtable(df, days, lagDays, measureTable, percentChangeKPI = 5)
 
 \item{measureTable}{A formatted data.frame contianing the columns 'measureName', 'Avg_Total', 'measureDisplayName', 'upGood', 'PerCapita'}
 
-\item{percentChangeKPI}{What percent change should the KPI's be activated for? Default is 5%.}
+\item{percentChangeKPI}{What percent change should the KPI's be activated for? Default is 5\%.}
 }
 \description{
 Create the dataset used by the COPtable with the multiple slicers

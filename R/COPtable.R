@@ -7,7 +7,7 @@
 #' @param days The number of days that the time period is over. Should match the days argument for the \code{numDays} argument of \code{rollSummaryXDays()}.
 #' @param lagDays The number of days to lag the data for.
 #' @param measureTable A formatted data.frame contianing the columns 'measureName', 'Avg_Total', 'measureDisplayName', 'upGood', 'PerCapita'
-#' @param percentChangeKPI What percent change should the KPI's be activated for? Default is 5%.
+#' @param percentChangeKPI What percent change should the KPI's be activated for? Default is 5\%.
 #'
 #' @export
 
