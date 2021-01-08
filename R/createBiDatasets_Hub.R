@@ -1,5 +1,5 @@
 
-#' @title Create the Dataset for Power Bi
+#' @title Create the COVID-19 Data Hub Dataset for Power Bi
 #'
 #' @description Given the base datasets, this function will do all the
 #'   transformations and summarizations that are used to feed the data being
