@@ -429,15 +429,15 @@
     },
     "marcR": {
       "Package": "marcR",
-      "Version": "0.3.1",
+      "Version": "0.3.2",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "MARC-KC",
       "RemoteRepo": "marcR",
       "RemoteRef": "main",
-      "RemoteSha": "961c9c4ec9033fe21456f47ec589f927b4d85c3d",
-      "Hash": "0449a36800ae4e9da096fb884af2ef25"
+      "RemoteSha": "df87e5c510cf36a27656a013c62695a21fdc07f4",
+      "Hash": "b7bf83e80f0d51898843eb426b9ec051"
     },
     "markdown": {
       "Package": "markdown",
