@@ -7,27 +7,31 @@
 #'
 #' @param baseDataList A named list of data.frames containing the base data. See
 #'   details for more information. Defaults to the return from
-#'   \code{downloadAllCovidAPIData()}
+#'   \code{getBaseCovidData()}
 #' @param lagDaysCDT Number of days to lag the Case, Death, Test data. Defaults
 #'   to the value used by the Hub (10).
 #' @param lagDaysHosp Number of days to lag the Hospital data. Defaults to the
 #'   value used by the Hub (2).
-
 #' @details \code{baseDataList} should contain a named list of the base data.frames. These
 #'   are available through the MARC data API through the helpful functions
-#'   \code{downloadMARCCovidData()} and \code{downloadAllCovidAPIData()} This should be 3
-#'   data.frames with he following names:
+#'   \code{downloadMARCCovidData()} and \code{downloadAllCovidAPIData()}, but
+#'   also must include the base summary datasets calculated from these. In total,
+#'   this should include the 3 base data.frames and the 3 summary data.frames
+#'   with the following names:
 #' \describe{
 #'   \item{cdtData}{Case, Death, and Test Data}
 #'   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
 #'   \item{hospData}{Hospital Data}
+#'   \item{cdtHospData}{A joined version of \code{cdtData} and \code{hospData}}
+#'   \item{cdtHosp7DayRollingData}{The 7 day rolling average of summary of cdtHospData}
+#'   \item{cdtHosp14DayRollingData}{The 14 day rolling average of summary of cdtHospData}
 #' }
 #'
 #' @return A list of data.frames that are used by MARC's COVID Data Hub.
 #'
 #' @export
 
-createBiDatasets <- function(baseDataList = downloadAllCovidAPIData(), lagDaysCDT = 10, lagDaysHosp = 2) {
+createBiDatasets <- function(baseDataList = getBaseCovidData(), lagDaysCDT = 10, lagDaysHosp = 2) {
 
 
 
@@ -35,63 +39,6 @@ createBiDatasets <- function(baseDataList = downloadAllCovidAPIData(), lagDaysCD
     # Load in the base data to the environment from a list ####
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     list2env(baseDataList, env = rlang::current_env())
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    # Combine Hospital and CDT Base Data ####
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    cdtHospData <- dplyr::full_join(cdtData, hospData, by = c("GeoID", "Date")) %>%
-        marcR::coalesceJoin(showMessage = FALSE) %>%
-        dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
-        dplyr::select(
-            Jurisdiction, State, GeoID, Region, Date,
-
-            CasesNew, CasesTotal,
-            DeathsNew, DeathsTotal,
-            TestsNew, TestsTotal,
-            Population,
-
-            HospitalsReporting, HospitalsTotal,
-            BedsTotal, BedsUsed, BedsAvailable,
-            BedsICUTotal, BedsICUUsed, BedsICUAvailable,
-            CovidTotal,
-            CovidNew,
-            CovidICUTotal, CovidICUConfirmed, CovidICUSuspected,
-            VentilatorsTotal, VentilatorsUsed, VentilatorsAvailable,
-            CovidVentilatorsUsed)
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    # Calculate Rolling Average Tables ####
-    message(crayon::blue("Calculating 7 and 14 day rolling averages."))
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    varTable <- tibble::tribble(
-        ~variable,                  ~Avg,         ~Total,     ~CalcString,
-        "CasesNew",                 TRUE,         TRUE,       NA,
-        "DeathsNew",                TRUE,         TRUE,       NA,
-        "TestsNew",                 TRUE,         TRUE,       NA,
-        "CovidNew",                 TRUE,         TRUE,       NA,
-        "CovidTotal",               TRUE,         FALSE,      NA,
-        "BedsUsedOther",            TRUE,         FALSE,      "BedsUsed - CovidTotal",
-        "BedsAvailable",            TRUE,         FALSE,      NA,
-        "CovidICUTotal",            TRUE,         FALSE,      NA,
-        "BedsICUUsedOther",         TRUE,         FALSE,      "BedsICUUsed - CovidICUTotal",
-        "BedsICUAvailable",         TRUE,         FALSE,      NA,
-        "CovidVentilatorsUsed",     TRUE,         FALSE,      NA,
-        "VentilatorsUsedOther",     TRUE,         FALSE,      "VentilatorsUsed - CovidVentilatorsUsed",
-        "VentilatorsAvailable",     TRUE,         FALSE,      NA,
-        "HospitalsReporting",       TRUE,         TRUE,       NA,
-        "HospitalsTotal",           TRUE,         TRUE,       NA
-    )
-
-
-    cdtHosp7DayRollingData <- rollSummaryXDays(df = cdtHospData, numDays = 7, varTable = varTable)
-
-    cdtHosp14DayRollingData <- rollSummaryXDays(df = cdtHospData, numDays = 14, varTable = varTable)
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 

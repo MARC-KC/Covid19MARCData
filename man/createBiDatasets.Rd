@@ -5,7 +5,7 @@
 \title{Create the Dataset for Power Bi}
 \usage{
 createBiDatasets(
-  baseDataList = downloadAllCovidAPIData(),
+  baseDataList = getBaseCovidData(),
   lagDaysCDT = 10,
   lagDaysHosp = 2
 )
@@ -13,7 +13,7 @@ createBiDatasets(
 \arguments{
 \item{baseDataList}{A named list of data.frames containing the base data. See
 details for more information. Defaults to the return from
-\code{downloadAllCovidAPIData()}}
+\code{getBaseCovidData()}}
 
 \item{lagDaysCDT}{Number of days to lag the Case, Death, Test data. Defaults
 to the value used by the Hub (10).}
@@ -32,11 +32,16 @@ Given the base datasets, this function will do all the
 \details{
 \code{baseDataList} should contain a named list of the base data.frames. These
   are available through the MARC data API through the helpful functions
-  \code{downloadMARCCovidData()} and \code{downloadAllCovidAPIData()} This should be 3
-  data.frames with he following names:
+  \code{downloadMARCCovidData()} and \code{downloadAllCovidAPIData()}, but
+  also must include the base summary datasets calculated from these. In total,
+  this should include the 3 base data.frames and the 3 summary data.frames
+  with the following names:
 \describe{
   \item{cdtData}{Case, Death, and Test Data}
   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
   \item{hospData}{Hospital Data}
+  \item{cdtHospData}{A joined version of \code{cdtData} and \code{hospData}}
+  \item{cdtHosp7DayRollingData}{The 7 day rolling average of summary of cdtHospData}
+  \item{cdtHosp14DayRollingData}{The 14 day rolling average of summary of cdtHospData}
 }
 }
