@@ -6,7 +6,6 @@
 \usage{
 createBiDatasets_Hub(
   baseDataList = getBaseCovidData(),
-  cutoffDay = "Sunday",
   lagDaysCDT = 10,
   lagDaysHosp = 2
 )

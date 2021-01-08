@@ -255,7 +255,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # COP Table ####
     # Used to create the main dynamic table with data on the COP page
-    cat(crayon::blue("Exporting COP comparison table with the formatted names.\n"))
+    message(crayon::blue("Exporting COP comparison table with the formatted names."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     measureTable <- tibble::tribble(
         ~measureName,         ~Avg_Total,  ~measureDisplayName,   ~upGood,  ~PerCapita,
