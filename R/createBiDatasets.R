@@ -338,6 +338,29 @@ createBiDatasets <- function(baseDataList = downloadAllCovidAPIData(), lagDaysCD
 
 
 
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # COP Table ####
+    # Used to create the main dynamic table with data on the COP page
+    cat(crayon::blue("Exporting COP comparison table with the formatted names.\n"))
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    measureTable <- tibble::tribble(
+        ~measureName,         ~Avg_Total,  ~measureDisplayName,   ~upGood,  ~PerCapita,
+        "CasesNew",           "Total",     "Cases",               FALSE,    TRUE,
+        "DeathsNew",          "Total",     "Deaths",              FALSE,    TRUE,
+        "TestsNew",           "Total",     "Tests",               TRUE,     TRUE
+    )
+
+    bi_COPTable <- list(
+        COPtable(cdtHosp7DayRollingData, days = 7, lagDays = lagDaysCDT, measureTable = measureTable, percentChangeKPI = 5),
+        COPtable(cdtHosp14DayRollingData, days = 14, lagDays = lagDaysCDT, measureTable = measureTable, percentChangeKPI = 5)#,
+        # COPtable(cdtHosp7DayRollingData, days = 7, lagDays = 0, measureTable = measureTable, percentChangeKPI = 5),
+        # COPtable(cdtHosp14DayRollingData, days = 14, lagDays = 0, measureTable = measureTable, percentChangeKPI = 5)
+    ) %>% dplyr::bind_rows()
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
 
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
