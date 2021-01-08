@@ -1,15 +1,4 @@
 
-
-
-
-
-
-
-
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# FNs - mostRecentGivenTime - Creates data formatted bar charts with time slicers on CDT pages####
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 #' @title Most Recent Data Given A Time Period
 #'
 #' @description Used to create the jurisdiction bar charts with time and per
@@ -155,4 +144,3 @@ mostRecentGivenTime <- function(df, days, lagDays) {
 
 
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
