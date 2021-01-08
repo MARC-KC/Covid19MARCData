@@ -1,7 +1,33 @@
 
+#' @title Create the Dataset for Power Bi
+#'
+#' @description Given the base datasets, this function will do all the
+#'   transformations and summarizations that are used to feed the data being
+#'   displayed on the MARC's COVID Data Hub.
+#'
+#' @param baseDataList A named list of data.frames containing the base data. See
+#'   details for more information. Defaults to the return from
+#'   `downloadAllCovidAPIData()`
+#' @param lagDaysCDT Number of days to lag the Case, Death, Test data. Defaults
+#'   to the value used by the Hub (10).
+#' @param lagDaysHosp Number of days to lag the Hospital data. Defaults to the
+#'   value used by the Hub (2).
 
+#' @details `baseDataList` should contain a named list of the base data.frames. These
+#'   are available through the MARC data API through the helpful functions
+#'   `downloadMARCCovidData()` and `downloadAllCovidAPIData()` This should be 3
+#'   data.frames with he following names:
+#' \describe{
+#'   \item{cdtData}{Case, Death, and Test Data}
+#'   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
+#'   \item{hospData}{Hospital Data}
+#' }
+#'
+#' @return A list of data.frames that are used by MARC's COVID Data Hub.
+#'
+#' @export
 
-createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
+createBiDatasets <- function(baseDataList = downloadAllCovidAPIData(), lagDaysCDT = 10, lagDaysHosp = 2) {
 
 
 
@@ -112,7 +138,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
             ))
 
 
-    # bi_7DayRollingLag <- bi_7DayRolling %>% dplyr::filter(Date <= (max(Date) - lagDays))
+    # bi_7DayRollingLag <- bi_7DayRolling %>% dplyr::filter(Date <= (max(Date) - lagDaysCDT))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -135,7 +161,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
                       TestsPositiveNew7DayAvgProportion, DeathsToCases7DayProportion, HospsToCases7DayProportion,
                       Population, PopulationTestStandard, PositiveTestStandardProportion, PositiveTestStandard, PositiveTestStandard,
                       KPI_PositiveTests, KPI_PopulationTests) %>%
-        dplyr::filter(Date <= (max(Date) - lagDays)) %>%
+        dplyr::filter(Date <= (max(Date) - lagDaysCDT)) %>%
         dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
         dplyr::filter(dayWeek == dayWeek[which.max(Date)]) %>%
         dplyr::select(-dayWeek)
@@ -182,7 +208,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
     bi_7DayComparison_MostRecent <- baseWeeklyComparisonData %>%
         marcR::groupby_rank(GeoID, Measure, rankby = Date, filterIDs = 1)
 
-    bi_7DayComparison_MostRecent_Lag <- baseWeeklyComparisonData %>% dplyr::filter(Date <= (max(Date) - lagDays)) %>%
+    bi_7DayComparison_MostRecent_Lag <- baseWeeklyComparisonData %>% dplyr::filter(Date <= (max(Date) - lagDaysCDT)) %>%
         marcR::groupby_rank(GeoID, Measure, rankby = Date, filterIDs = 1)
 
     bi_7DayComparison_MostRecent_HospLag <- baseWeeklyComparisonData %>% dplyr::filter(Date <= (max(Date) - lagDaysHosp)) %>%
@@ -191,7 +217,7 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
     bi_7DayComparison_Last6Weeks <- baseWeeklyComparisonData %>% dplyr::filter(Date >= (max(Date, na.rm = TRUE) - lubridate::weeks(6)))
 
-    bi_7DayComparison_Last6Weeks_Lag <- baseWeeklyComparisonData %>% dplyr::filter(Date >= ((max(Date, na.rm = TRUE) - lagDays) - lubridate::weeks(6)) & (Date <= ((max(Date, na.rm = TRUE) - lagDays))))
+    bi_7DayComparison_Last6Weeks_Lag <- baseWeeklyComparisonData %>% dplyr::filter(Date >= ((max(Date, na.rm = TRUE) - lagDaysCDT) - lubridate::weeks(6)) & (Date <= ((max(Date, na.rm = TRUE) - lagDaysCDT))))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -263,10 +289,10 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
 
 
     bi_TestingPage7DayRollingLag <- ct7DayRollingData %>%
-        dplyr::filter(Date <= max(Date) - lagDays)
+        dplyr::filter(Date <= max(Date) - lagDaysCDT)
 
     bi_TestingPage7DayRollingThinLag <- ct7DayRollingData %>%
-        dplyr::filter(Date <= max(Date) - lagDays) %>%
+        dplyr::filter(Date <= max(Date) - lagDaysCDT) %>%
         dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
         dplyr::filter(dayWeek == dayWeek[which.max(Date)]) %>%
         dplyr::select(-dayWeek)
@@ -282,11 +308,11 @@ createBiDatasets <- function(baseDataList, lagDays, lagDaysHosp) {
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     mostRecentGivenHelperTable <- tibble::tribble(
         ~datasetName,         ~days, ~lagDays, ~keep,
-        "cdtHospData",        7,     lagDays,  "Both",
-        "cdtHospData",        14,    lagDays,  "Both",
-        "cdtHospData",        30,    lagDays,  "Both",
-        "cdtHospData",        60,    lagDays,  "Both",
-        "cdtHospData",        90,    lagDays,  "Both",
+        "cdtHospData",        7,     lagDaysCDT,  "Both",
+        "cdtHospData",        14,    lagDaysCDT,  "Both",
+        "cdtHospData",        30,    lagDaysCDT,  "Both",
+        "cdtHospData",        60,    lagDaysCDT,  "Both",
+        "cdtHospData",        90,    lagDaysCDT,  "Both",
         "cdtHospData",        NA,    NA,       "Both"
     )
 
