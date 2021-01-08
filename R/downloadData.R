@@ -98,7 +98,7 @@ downloadAllCovidAPIData <- function() {
 
 #' @title Create Base Calculated Datasets from Raw Data
 #'
-#' @description  Create the Base Datasets that al of the COVID-19 Data Hub is ran from
+#' @description  Create the Base Datasets that all of the COVID-19 Data Hub is ran from
 #'
 #' @param baseDataList A named list of data.frames containing the base data. See
 #'   details for more information. Defaults to the return from
@@ -150,6 +150,44 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
 
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # Full Hospital Data WIth Calculations And Most Recent ####
+    message(crayon::blue("Formatting base hospital data."))
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    hospData <- hospData %>%
+        dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
+        dplyr::mutate(
+            #Calculate Used by Other Columns
+            BedsUsedOther = (BedsUsed - CovidTotal),
+            BedsICUUsedOther = (BedsICUUsed - CovidICUTotal),
+            VentilatorsUsedOther = (VentilatorsUsed - CovidVentilatorsUsed),
+
+            #Explicitly Calculate Totals using used and available
+            BedsTotal = (BedsAvailable + BedsUsedOther + CovidTotal),
+            BedsICUTotal = (BedsICUAvailable + BedsICUUsedOther + CovidICUTotal),
+            VentilatorsTotal = (VentilatorsAvailable + VentilatorsUsedOther + CovidVentilatorsUsed),
+
+            #Calculate Proportions of Use
+            BedsAvailableProportion = BedsAvailable/dplyr::if_else(BedsTotal == 0, NA_integer_, BedsTotal),
+            BedsUsedOtherProportion = BedsUsedOther/dplyr::if_else(BedsTotal == 0, NA_integer_, BedsTotal),
+            CovidTotalProportion = CovidTotal/dplyr::if_else(BedsTotal == 0, NA_integer_, BedsTotal),
+            BedsICUAvailableProportion = BedsICUAvailable/dplyr::if_else(BedsICUTotal == 0, NA_integer_, BedsICUTotal),
+            BedsICUUsedOtherProportion = BedsICUUsedOther/dplyr::if_else(BedsICUTotal == 0, NA_integer_, BedsICUTotal),
+            CovidICUTotalProportion = CovidICUTotal/dplyr::if_else(BedsICUTotal == 0, NA_integer_, BedsICUTotal),
+            VentilatorsAvailableProportion = VentilatorsAvailable/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal),
+            VentilatorsUsedOtherProportion = VentilatorsUsedOther/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal),
+            CovidVentilatorsUsedProportion = CovidVentilatorsUsed/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal)
+        )
+
+    #HospitalTotal based on a 3 week window so that it can adapt to reporting over time
+    hospData <- hospData %>%
+        dplyr::mutate(
+            HospitalsTotal = purrr::map2_int(GeoID, Date, ~dplyr::filter(hospData, GeoID == .x & Date >= .y - 10 & Date <= .y + 10)[['HospitalsReporting']] %>% max(., na.rm = TRUE) %>% as.integer())
+        )
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Calculate Rolling Average Tables ####
     message(crayon::blue("Calculating 7 and 14 day rolling averages."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -179,9 +217,11 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-    outSummaries <- list('cdtHospData' = cdtHospData, 'cdtHosp7DayRollingData' = cdtHosp7DayRollingData, 'cdtHosp14DayRollingData' = cdtHosp14DayRollingData)
-
-    out <- c(baseDataList, outSummaries)
+    out <- list(
+        'cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData,
+        'cdtHospData' = cdtHospData,
+        'cdtHosp7DayRollingData' = cdtHosp7DayRollingData, 'cdtHosp14DayRollingData' = cdtHosp14DayRollingData
+    )
 
     return(out)
 

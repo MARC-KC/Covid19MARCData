@@ -6,6 +6,7 @@
 \usage{
 createBiDatasets_Hub(
   baseDataList = getBaseCovidData(),
+  cutoffDay = "Sunday",
   lagDaysCDT = 10,
   lagDaysHosp = 2
 )
@@ -39,7 +40,7 @@ Given the base datasets, this function will do all the
 \describe{
   \item{cdtData}{Case, Death, and Test Data}
   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
-  \item{hospData}{Hospital Data}
+  \item{hospData}{Hospital Data: modified by \code{getBaseCovidData}}
   \item{cdtHospData}{A joined version of \code{cdtData} and \code{hospData}}
   \item{cdtHosp7DayRollingData}{The 7 day rolling average of summary of cdtHospData}
   \item{cdtHosp14DayRollingData}{The 14 day rolling average of summary of cdtHospData}

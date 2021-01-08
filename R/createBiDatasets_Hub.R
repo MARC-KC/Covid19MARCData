@@ -21,7 +21,7 @@
 #' \describe{
 #'   \item{cdtData}{Case, Death, and Test Data}
 #'   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
-#'   \item{hospData}{Hospital Data}
+#'   \item{hospData}{Hospital Data: modified by \code{getBaseCovidData}}
 #'   \item{cdtHospData}{A joined version of \code{cdtData} and \code{hospData}}
 #'   \item{cdtHosp7DayRollingData}{The 7 day rolling average of summary of cdtHospData}
 #'   \item{cdtHosp14DayRollingData}{The 14 day rolling average of summary of cdtHospData}
@@ -55,6 +55,17 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     # bi_CDT_MostRecent <- bi_CDT_TimeSeries %>% marcR::groupby_rank(GeoID, rankby = Date, filterIDs = 1)
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # Full Hospital Data WIth Calculations And Most Recent ####
+    message(crayon::blue("Exporting base hospital data."))
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    bi_HospitalDailyData <- hospData
+
+    bi_HospitalMostRecent <- hospData %>%
+        marcR::groupby_rank(GeoID, rankby = Date, filterIDs = 1)
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -165,50 +176,6 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     bi_7DayComparison_Last6Weeks <- baseWeeklyComparisonData %>% dplyr::filter(Date >= (max(Date, na.rm = TRUE) - lubridate::weeks(6)))
 
     bi_7DayComparison_Last6Weeks_Lag <- baseWeeklyComparisonData %>% dplyr::filter(Date >= ((max(Date, na.rm = TRUE) - lagDaysCDT) - lubridate::weeks(6)) & (Date <= ((max(Date, na.rm = TRUE) - lagDaysCDT))))
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-
-
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    # Full Hospital Data WIth Calculations And Most Recent ####
-    message(crayon::blue("Exporting base hospital data."))
-    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    bi_HospitalDailyData <- hospData %>%
-        dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
-        dplyr::mutate(
-            #Calculate Used by Other Columns
-            BedsUsedOther = (BedsUsed - CovidTotal),
-            BedsICUUsedOther = (BedsICUUsed - CovidICUTotal),
-            VentilatorsUsedOther = (VentilatorsUsed - CovidVentilatorsUsed),
-
-            #Explicitly Calculate Totals using used and available
-            BedsTotal = (BedsAvailable + BedsUsedOther + CovidTotal),
-            BedsICUTotal = (BedsICUAvailable + BedsICUUsedOther + CovidICUTotal),
-            VentilatorsTotal = (VentilatorsAvailable + VentilatorsUsedOther + CovidVentilatorsUsed),
-
-            #Calculate Proportions of Use
-            BedsAvailableProportion = BedsAvailable/dplyr::if_else(BedsTotal == 0, NA_integer_, BedsTotal),
-            BedsUsedOtherProportion = BedsUsedOther/dplyr::if_else(BedsTotal == 0, NA_integer_, BedsTotal),
-            CovidTotalProportion = CovidTotal/dplyr::if_else(BedsTotal == 0, NA_integer_, BedsTotal),
-            BedsICUAvailableProportion = BedsICUAvailable/dplyr::if_else(BedsICUTotal == 0, NA_integer_, BedsICUTotal),
-            BedsICUUsedOtherProportion = BedsICUUsedOther/dplyr::if_else(BedsICUTotal == 0, NA_integer_, BedsICUTotal),
-            CovidICUTotalProportion = CovidICUTotal/dplyr::if_else(BedsICUTotal == 0, NA_integer_, BedsICUTotal),
-            VentilatorsAvailableProportion = VentilatorsAvailable/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal),
-            VentilatorsUsedOtherProportion = VentilatorsUsedOther/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal),
-            CovidVentilatorsUsedProportion = CovidVentilatorsUsed/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal)
-        )
-
-    #HospitalTotal based on a 3 week window so that it can adapt to reporting over time
-    bi_HospitalDailyData <- bi_HospitalDailyData %>%
-        dplyr::mutate(
-            HospitalsTotal = purrr::map2_int(GeoID, Date, ~dplyr::filter(bi_HospitalDailyData, GeoID == .x & Date >= .y - 10 & Date <= .y + 10)[['HospitalsReporting']] %>% max(., na.rm = TRUE) %>% as.integer())
-        )
-
-    bi_HospitalMostRecent <- bi_HospitalDailyData %>%
-        marcR::groupby_rank(GeoID, rankby = Date, filterIDs = 1)
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 

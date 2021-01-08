@@ -15,7 +15,7 @@ details for more information. Defaults to the return from
 A list of data.frames that are used by MARC's COVID Data Hub.
 }
 \description{
-Create the Base Datasets that al of the COVID-19 Data Hub is ran from
+Create the Base Datasets that all of the COVID-19 Data Hub is ran from
 }
 \details{
 \code{baseDataList} should contain a named list of the base data.frames. These
