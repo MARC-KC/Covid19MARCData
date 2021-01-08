@@ -20,7 +20,7 @@
 #'
 #' }
 #' @export
-downloadMARCCovidData<- function(dataset = c("CDT", "CDT_NewlyReported", "Hospital")) {
+downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospital")) {
 
     #Match Arguments
     dataset <- match.arg(dataset)
