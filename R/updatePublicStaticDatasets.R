@@ -20,10 +20,10 @@ checkPublicStaticDatasets <- function() {
         prettyJurisdictionsInternal <- Covid19MARCInternal::prettyJurisdictions
 
         # if any not identical to package version provide startup message
-        if (!identical(jurisTable, jurisTableInternal) |
-            !identical(popTable, popTableInternal) |
-            !identical(GeoIDs, GeoIDsInternal)  |
-            !identical(prettyJurisdictions, prettyJurisdictionsInternal)) {
+        if (!(nrow(dplyr::distinct(dplyr::bind_rows(jurisTable, jurisTableInternal))) == nrow(jurisTable)) |
+            !(nrow(dplyr::distinct(dplyr::bind_rows(popTable, popTableInternal))) == nrow(popTable)) |
+            !identical(GeoIDs, GeoIDsInternal) |
+            !(nrow(dplyr::distinct(dplyr::bind_rows(prettyJurisdictions, prettyJurisdictionsInternal))) == nrow(prettyJurisdictions))) {
             packageStartupMessage('Data sets need updated. Open the Covid10MARCData repository, run devtools::load_all(), then run updatePublicStaticDatasets()')
         } else {
             # packageStartupMessage('1')
