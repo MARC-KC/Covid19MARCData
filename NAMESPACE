@@ -3,7 +3,7 @@
 export("%>%")
 export(COPtable)
 export(baseDaysComparison)
-export(createBiDatasets)
+export(createBiDatasets_Hub)
 export(downloadAllCovidAPIData)
 export(downloadMARCCovidData)
 export(getBaseCovidData)

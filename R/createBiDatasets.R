@@ -31,7 +31,7 @@
 #'
 #' @export
 
-createBiDatasets <- function(baseDataList = getBaseCovidData(), lagDaysCDT = 10, lagDaysHosp = 2) {
+createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT = 10, lagDaysHosp = 2) {
 
 
 
