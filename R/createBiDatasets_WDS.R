@@ -4,9 +4,34 @@
 #' @description   Given the base datasets, this function will do all the
 #'   transformations and summarizations that are used to feed the data being
 #'   displayed on the Weekly Data Snapshot
-
+#' @param baseDataList A named list of data.frames containing the base data. See
+#'   details for more information. Defaults to the return from
+#'   \code{getBaseCovidData()}
+#' @param cutoffDay A character day of the week. One of "Sunday", "Monday", "Tuesday", "Wednesday",
+#'   "Thursday", "Friday", "Saturday"
+#' @param lagDaysCDT Number of days to lag the Case, Death, Test data. Defaults
+#'   to the value used by the Hub (10).
+#' @param lagDaysHosp Number of days to lag the Hospital data. Defaults to the
+#'   value used by the Hub (2).
+#' @details \code{baseDataList} should contain a named list of the base data.frames. These
+#'   are available through the MARC data API through the helpful functions
+#'   \code{downloadMARCCovidData()} and \code{downloadAllCovidAPIData()}, but
+#'   also must include the base summary datasets calculated from these. In total,
+#'   this should include the 3 base data.frames and the 3 summary data.frames
+#'   with the following names:
+#' \describe{
+#'   \item{cdtData}{Case, Death, and Test Data}
+#'   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
+#'   \item{hospData}{Hospital Data: modified by \code{getBaseCovidData}}
+#'   \item{cdtHospData}{A joined version of \code{cdtData} and \code{hospData}}
+#'   \item{cdtHosp7DayRollingData}{The 7 day rolling average of summary of cdtHospData}
+#'   \item{cdtHosp14DayRollingData}{The 14 day rolling average of summary of cdtHospData}
+#' }
 #' @export
-createBiDatasets_WDS <- function(baseDataList = getBaseCovidData(), cutoffDay = 'Sunday', lagDaysCDT = 10, lagDaysHosp = 2) {
+createBiDatasets_WDS <- function(baseDataList = getBaseCovidData(),
+                                 cutoffDay = c("Sunday", "Monday", "Tuesday", "Wednesday",
+                                               "Thursday", "Friday", "Saturday"),
+                                 lagDaysCDT = 10, lagDaysHosp = 2) {
 
 
 
@@ -25,6 +50,8 @@ createBiDatasets_WDS <- function(baseDataList = getBaseCovidData(), cutoffDay = 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Get the cutoff days of the week as integers ####
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    cutoffDay <- match.arg(cutoffDay)
+
     cutoffDayInt <- as.integer(
         factor(cutoffDay,
                levels = c("Monday", "Tuesday", "Wednesday",
