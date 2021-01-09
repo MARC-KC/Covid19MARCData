@@ -78,6 +78,48 @@ cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported")
 hospData <-  downloadMARCCovidData(dataset = "Hospital")
 ```
 
+Or you can download all three of these datasets with a single command as a list of data.frames:
+```{r}
+downloadAllCovidAPIData()
+```
+
+Or you can download all three datasets and create the base derived datasets with:
+```{r}
+getBaseCovidData()
+```
+
+
+#### Create Derived Datasets for visualizations
+
+There are two main products that MARC produces using this data.These include both the Kansas City Region and HCC Northern and Southern Regional COVID-19 Data Hubs and the Weekly Data Shots.
+
+All of the datasets used to produce the figures for the COVID-19 Data Hubs can be created using the following function:
+```{r}
+createBiDatasets_Hub()
+```
+
+
+All of the datasets used to produce the figures and summaries for the Weekly Data Snapshot can be created using the following function:
+```{r}
+createBiDatasets_WDS()
+```
+
+In order to keep out products up to date, we run both of these functions during our morning and nightly updates is a pattern like:
+```{r}
+
+#Download in the most recent data from the API and create the base datasets
+baseData <- getBaseCovidData()
+
+#Create the datasets needed for the COVID-19 Hubs
+dfListHub <- createBiDatasets_Hub(baseDataList = baseData, lagDaysCDT = 10, lagDaysHosp = 2)
+
+#Create the datasets needed for the Weekly Data Snapshot
+dfListWDS <- createBiDatasets_WDS(baseDataList = baseData, cutoffDay = 'Sunday', lagDaysCDT = 10, lagDaysHosp = 2)
+
+#Output the data as CSV's for consumption by Power Bi
+list2CSV(c(dfListHub, dfListWDS))
+```
+
 
 ## Where does the data come from?
 See COVID Data Hub FAQ
