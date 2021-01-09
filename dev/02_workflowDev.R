@@ -1,9 +1,12 @@
 
-
-
-
-dfList = createBiDatasets_Hub(baseDataList = getBaseCovidData(), lagDays = 10, lagDaysHosp = 2)
 outputFolder = '//KCJazz/GIS/DataDevelopment/HumanServices/COVID-19/Outputs/PipelineDataOutputs/PublishData'
-list2CSV(dfList, outputFolder)
+baseData <- getBaseCovidData()
+
+dfListHub <- createBiDatasets_Hub(baseDataList = baseData, lagDaysCDT = 10, lagDaysHosp = 2)
+list2CSV(dfListHub, outputFolder)
+
+
+dfListWDS <- createBiDatasets_WDS(baseDataList = baseData, cutoffDay = 'Tuesday', lagDaysCDT = 10, lagDaysHosp = 2)
+
 
 
