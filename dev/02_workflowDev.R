@@ -9,4 +9,5 @@ list2CSV(dfListHub, outputFolder)
 dfListWDS <- createBiDatasets_WDS(baseDataList = baseData, cutoffDay = 'Tuesday', lagDaysCDT = 10, lagDaysHosp = 2)
 
 
+list2CSV(c(dfListHub, dfListWDS), outputFolder)
 
