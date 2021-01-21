@@ -78,7 +78,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
                                        TestsPositiveNew7DayAvgProportion = CasesNew7DayTotal/dplyr::if_else(TestsNew7DayTotal == 0, NA_integer_, TestsNew7DayTotal),
                                        DeathsToCases7DayProportion = DeathsNew7DayTotal/dplyr::if_else(CasesNew7DayTotal == 0, NA_integer_, CasesNew7DayTotal),
                                        HospsToCases7DayProportion = CovidNew7DayTotal/dplyr::if_else(CasesNew7DayTotal == 0, NA_integer_, CasesNew7DayTotal)),
-                         dplyr::mutate(popTable,
+                         dplyr::mutate(Covid19MARCData::popTable,
                                        PopulationTestStandard = (ceiling(Population / 100000) * 150),
                                        PositiveTestStandardProportion = 0.05,
                                        PositiveTestStandard = 5),
@@ -283,8 +283,8 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     message(crayon::blue("Exporting jurisdiction bridge table with the formatted names."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    bi_PrettyJurisdictions_MARC <- prettyJurisdictions %>% dplyr::filter(Site == 'MARC') %>% dplyr::select(-Site)
-    bi_PrettyJurisdictions_HCC <- prettyJurisdictions %>% dplyr::filter(Site == 'HCC') %>% dplyr::select(-Site)
+    bi_PrettyJurisdictions_MARC <- Covid19MARCData::prettyJurisdictions %>% dplyr::filter(Site == 'MARC') %>% dplyr::select(-Site)
+    bi_PrettyJurisdictions_HCC <- Covid19MARCData::prettyJurisdictions %>% dplyr::filter(Site == 'HCC') %>% dplyr::select(-Site)
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 

@@ -80,13 +80,13 @@ downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospi
 downloadAllCovidAPIData <- function() {
 
     cdtData <- downloadMARCCovidData(dataset = "CDT") %>%
-        dplyr::filter(GeoID %in% GeoIDs[['base']])
+        dplyr::filter(GeoID %in% Covid19MARCData::GeoIDs[['base']])
 
     cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported") %>%
-        dplyr::filter(GeoID %in% GeoIDs[['base']])
+        dplyr::filter(GeoID %in% Covid19MARCData::GeoIDs[['base']])
 
     hospData <-  downloadMARCCovidData(dataset = "Hospital") %>%
-        dplyr::filter(GeoID %in% GeoIDs[['base']])
+        dplyr::filter(GeoID %in% Covid19MARCData::GeoIDs[['base']])
 
     out <- list('cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData)
 

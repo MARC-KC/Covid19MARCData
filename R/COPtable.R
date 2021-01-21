@@ -19,7 +19,7 @@ COPtable <- function(df, days, lagDays, measureTable, percentChangeKPI = 5) {
 
 
     #Join Base df and popTable and Organize Main Columns
-    df <- df %>% dplyr::left_join(popTable, by = "GeoID") %>%
+    df <- df %>% dplyr::left_join(Covid19MARCData::popTable, by = "GeoID") %>%
         dplyr::filter(Date <= (max(Date) - lagDays)) %>%
         dplyr::select(c("Jurisdiction", "State", "Region", "GeoID", "Date", glue::glue_data(measureTable, "{measureTable$measureName}{days}Day{Avg_Total}"), "Population"))
 
