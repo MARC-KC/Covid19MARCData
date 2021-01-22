@@ -174,8 +174,15 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
 
 
     bi_7DayComparison_Last6Weeks <- baseWeeklyComparisonData %>% dplyr::filter(Date >= (max(Date, na.rm = TRUE) - lubridate::weeks(6)))
-
     bi_7DayComparison_Last6Weeks_Lag <- baseWeeklyComparisonData %>% dplyr::filter(Date >= ((max(Date, na.rm = TRUE) - lagDaysCDT) - lubridate::weeks(6)) & (Date <= ((max(Date, na.rm = TRUE) - lagDaysCDT))))
+    bi_7DayComparison_Last6Weeks_HospLag <- baseWeeklyComparisonData %>% dplyr::filter(Date >= ((max(Date, na.rm = TRUE) - lagDaysHosp) - lubridate::weeks(6)) & (Date <= ((max(Date, na.rm = TRUE) - lagDaysHosp))))
+
+
+    bi_7DayComparison_AllTime <- baseWeeklyComparisonData
+    bi_7DayComparison_AllTime_Lag <- baseWeeklyComparisonData %>% dplyr::filter(Date <= (max(Date, na.rm = TRUE) - lagDaysCDT))
+    bi_7DayComparison_AllTime_HospLag <- baseWeeklyComparisonData %>% dplyr::filter(Date <= (max(Date, na.rm = TRUE) - lagDaysHosp))
+
+
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
