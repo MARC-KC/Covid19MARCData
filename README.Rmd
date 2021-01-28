@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 
 # Mid-America Regional Council's COVID-19 Data
 
-This repository holds all the code [MARC](https://www.marc.org/) uses to keep their [COVID-19 Data Hub](https://marc2.org/covidhub/) up to date for the Kansas City Region. It exposes the entire process for downloading the most up-to-date datasets from our MARC Data API and transforming it to the forms needed to feed the [COVID-19 Data Hub](https://marc2.org/covidhub/).
+This repository holds all the code [MARC](https://www.marc.org/) uses to keep their COVID-19 Data Hub up to date for the [Kansas City](https://marc2.org/covidhub/) and [Northern and Southern Health Care Coalition](https://marc2.org/hcchub/) Regions. It exposes the entire process for downloading the most up-to-date datasets from our MARC Data API and transforming it to the forms needed to feed the [COVID-19 Data Hub](https://marc2.org/covidhub/).
 
 ## How to use this repository?
 
@@ -41,6 +41,8 @@ These files are updated as part of our process for pushing updated data to our p
 
 ### If you want to implement the API or the R package into your pipeline using R
 
+This repository is actually an R package made for this purpose. MARC uses this package to make sure the data being displayed through Power BI on the [COVID-19 Data Hub](https://marc2.org/covidhub/) stays up to date.
+
 #### Make sure dependencies are installed:
 
 Programs to install:
@@ -54,7 +56,7 @@ install.packages('remotes')
 ```
 
 
-Then install the Covid19MARCData package with:
+Then install the Covid19MARCData package from this repository with:
 ```{r}
 remotes::install_github('MARC-KC/Covid19MARCData')
 ```
@@ -95,7 +97,7 @@ getBaseCovidData()
 
 #### Create Derived Datasets for visualizations
 
-There are two main products that MARC produces using this data.These include both the Kansas City Region and HCC Northern and Southern Regional COVID-19 Data Hubs and the Weekly Data Shots.
+There are two main products that MARC produces using this data.These include both the Kansas City Region and HCC Northern and Southern Regional COVID-19 Data Hubs and the Weekly Data Snapshots. The returns from `createBiDatasets_Hub()` and `createBiDatasets_WDS()` will be a list of the created data.frames.
 
 All of the datasets used to produce the figures for the COVID-19 Data Hubs can be created using the following function:
 ```{r}
@@ -108,7 +110,7 @@ All of the datasets used to produce the figures and summaries for the Weekly Dat
 createBiDatasets_WDS()
 ```
 
-In order to keep out products up to date, we run both of these functions during our morning and nightly updates is a pattern like:
+In order to keep our products up to date, we run both of these functions during our morning and nightly updates is a pattern like:
 ```{r}
 #Download in the most recent data from the API 
 apiData <- Covid19MARCData::downloadAllCovidAPIData()
