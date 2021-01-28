@@ -14,7 +14,12 @@ Hub](https://marc2.org/covidhub/).
 
 ### If you just want to download the base datasets directly as a zipped set of csv files:
 
-[<img src="man/figures/downloadCSVs.png" height="50px">](https://marc2.org/coviddata/regionalcovid_datadictionary.xlsx)
+<!-- [<img src="man/figures/downloadCSVs.png" height="50px">](https://marc2.org/coviddata/regionalcovid_datadictionary.xlsx) -->
+
+[<img src="man/figures/downloadAllCSVs.png" height="50px" title="Download All COVID-19 Datasets as Zipped CSV's">](https://marc2.org/coviddata/CovidData_All.zip)
+[<img src="man/figures/downloadBaseCSVs.png" height="50px" title="Download All API COVID-19 Datasets as Zipped CSV's">](https://marc2.org/coviddata/CovidData_Base.zip)  
+[<img src="man/figures/downloadPowerBiCSVs.png" height="50px" title="Download All Power BI COVID-19 Datasets as Zipped CSV's">](https://marc2.org/coviddata/CovidData_PBI.zip)
+[<img src="man/figures/downloadWeeklySnapshotCSVs.png" height="50px" title="Download All Weekly Data Snapshot COVID-19 Datasets as Zipped CSV's">](https://marc2.org/coviddata/CovidData_WDS.zip)
 
 These files are updated as part of our process for pushing updated data
 to our publication server so they should match the data in the MARC Data
@@ -22,24 +27,24 @@ API.
 
 ### If you want access to the API directly, the GET URL’s are as follows:
 
-  - Case, Death, and Test Data:
+-   Case, Death, and Test Data:
     </br><https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtest>
-      - This is the time series of the back-updated Case, Death, Test
+    -   This is the time series of the back-updated Case, Death, Test
         data that MARC uses
-  - Newly Reported Case, Death, and Test Data:
+-   Newly Reported Case, Death, and Test Data:
     </br><https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported>
-      - This is the time series of Newly Reported Case, Death, Test data
+    -   This is the time series of Newly Reported Case, Death, Test data
         that MARC uses to provide an estimate of how many Cases, Deaths,
         and Tests were reported in the last 24 hours similar to how the
         media reports these values. This data is not back-updated.
-  - Hospital Data:
+-   Hospital Data:
     </br><https://gis2.marc2.org/MARCDataAPI/api/covidhospital>
-      - This is the time series of the back-updated Hospital data that
+    -   This is the time series of the back-updated Hospital data that
         MARC uses
-  - **Note** The LastUpdated columns are in UTC time if downloading
+-   **Note** The LastUpdated columns are in UTC time if downloading
     directly from the API. The time conversion to
-    ‘America/Chicago’/‘Central’ is implemented when downloading
-    from the R package with the function `downloadMARCCovidData()`
+    ‘America/Chicago’/‘Central’ is implemented when downloading from the
+    R package with the function `downloadMARCCovidData()`
 
 ### If you want to implement the API or the R package into your pipeline using R
 
@@ -47,8 +52,8 @@ API.
 
 Programs to install:
 
-  - R (From CRAN; latest version at time of writing was 4.0.3)
-  - RStudio (Helpful R IDE)
+-   R (From CRAN; latest version at time of writing was 4.0.3)
+-   RStudio (Helpful R IDE)
 
 Once these programs are installed. Open up RStudio and install the
 {remotes} package by running:
@@ -135,8 +140,11 @@ In order to keep out products up to date, we run both of these functions
 during our morning and nightly updates is a pattern like:
 
 ``` r
-#Download in the most recent data from the API and create the base datasets
-baseData <- getBaseCovidData()
+#Download in the most recent data from the API 
+apiData <- Covid19MARCData::downloadAllCovidAPIData()
+
+#Create the base datasets
+baseData <- getBaseCovidData(apiData)
 
 #Create the datasets needed for the COVID-19 Hubs
 dfListHub <- createBiDatasets_Hub(baseDataList = baseData, lagDaysCDT = 10, lagDaysHosp = 2)
@@ -145,7 +153,8 @@ dfListHub <- createBiDatasets_Hub(baseDataList = baseData, lagDaysCDT = 10, lagD
 dfListWDS <- createBiDatasets_WDS(baseDataList = baseData, cutoffDay = 'Sunday', lagDaysCDT = 10, lagDaysHosp = 2)
 
 #Output the data as CSV's for consumption by Power Bi
-list2CSV(c(dfListHub, dfListWDS))
+names(apiData) <- glue::glue("bi_base_{names(apiData)}")
+list2CSV(c(apiData, dfListHub, dfListWDS))
 ```
 
 ## Where does the data come from?
