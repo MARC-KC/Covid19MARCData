@@ -253,7 +253,11 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
             return(NULL)
         }
     })
-
+    bi_JurisdictionBarCharts <- bi_JurisdictionBarCharts %>%
+        dplyr::mutate(Raw_Per100K = dplyr::case_when(
+            Raw_Per100K == 'Per100K' ~ 'Total Cases Per 100K',
+            Raw_Per100K == 'Raw' ~ 'Total Cases'
+        ))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
