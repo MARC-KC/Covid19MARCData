@@ -255,8 +255,8 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     })
     bi_JurisdictionBarCharts <- bi_JurisdictionBarCharts %>%
         dplyr::mutate(Raw_Per100K = dplyr::case_when(
-            Raw_Per100K == 'Per100K' ~ 'Total Cases Per 100K',
-            Raw_Per100K == 'Raw' ~ 'Total Cases'
+            Raw_Per100K == 'Per100K' ~ glue::glue('Total {Measure} Per 100K'),
+            Raw_Per100K == 'Raw' ~ glue::glue('Total {Measure}')
         ))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
