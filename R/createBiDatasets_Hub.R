@@ -320,7 +320,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     out <- mget(stringr::str_subset(ls(), "^bi_"))
-
+    names(out) <- stringr::str_remove(names(out), "^bi_")
 
     return(out)
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

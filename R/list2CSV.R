@@ -11,7 +11,7 @@ list2CSV <- function(dfList, outputFolder = file.path(getwd(), 'outputDatasetsFo
     if (dir.exists(outputFolder) & overwriteDirectory) unlink(outputFolder, recursive = TRUE) #if folder exists, delete it
     dir.create(outputFolder, recursive = TRUE, showWarnings = FALSE) #create the directory
     purrr::walk(seq_along(dfList), ~{
-        fileName <- stringr::str_remove(names(dfList)[.x], "^bi_")
+        fileName <- names(dfList)[.x]
         message(crayon::blue("Saving file:", paste0(fileName, ".csv"), paste0("(", .x, "/", length(dfList), ")")))
         readr::write_csv(x = dfList[[.x]], file = file.path(outputFolder, paste0(fileName, ".csv")), na = "")
     })
