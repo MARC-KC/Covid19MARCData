@@ -87,7 +87,7 @@ mostRecentGivenTime <- function(df, days, lagDays) {
             #Add Slicer and filterLevels for ease of selection and filtering in Power Bi
             outdf <- outdf %>%
                 dplyr::mutate(
-                    SlicerLevels = glue::glue("Last {days} days{dplyr::if_else(lagDays == 0, '.', paste0(' given a ', lagDays, ' day lag.'))}"),
+                    SlicerLevels = glue::glue("Last {days} days{dplyr::if_else(lagDays == 0, '', '*')}"),
                     filterLevels = glue::glue("{stringr::str_pad(days, 2, pad = '0')}_{stringr::str_pad(lagDays, 2, pad = '0')}")
                 )
 
