@@ -93,7 +93,20 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
                 TestsNew7DayAvg < PopulationTestStandard ~ 3,
                 TestsNew7DayAvg > PopulationTestStandard ~ 1,
                 TRUE ~ 2
-            ))
+            )
+        ) %>%
+        dplyr::select(
+            Jurisdiction, State, Region, GeoID, Date,
+            CasesNew7DayTotal, CasesNew7DayAvg,
+            DeathsNew7DayTotal, DeathsNew7DayAvg,
+            TestsNew7DayTotal, TestsNew7DayAvg,
+            TestsPositiveNew7DayAvgProportion, DeathsToCases7DayProportion, HospsToCases7DayProportion,
+            Population, PopulationTestStandard, KPI_PopulationTests,
+            PositiveTestStandardProportion, PositiveTestStandard, KPI_PositiveTests,
+            CovidNew7DayTotal, CovidNew7DayAvg,
+            HospitalsReporting7DayTotal, HospitalsReporting7DayAvg,
+            HospitalsTotal7DayTotal, HospitalsTotal7DayAvg
+        )
 
 
     # bi_7DayRollingLag <- bi_7DayRolling %>% dplyr::filter(Date <= (max(Date) - lagDaysCDT))
