@@ -300,6 +300,15 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
 
 
 
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # School Gating Criteria ####
+    # Used to create the main table for the School Gating Criteria Page
+    message(crayon::blue("Exporting School Gating Criteria Datasets."))
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    bi_SGC_14DaySummary <- SGC_14DaySummary(df_14DayRolling = cdtHosp14DayRollingData, lagDays = 7)
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # PrettyJurisdictions ####

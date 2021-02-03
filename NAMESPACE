@@ -2,6 +2,7 @@
 
 export("%>%")
 export(COPtable)
+export(SGC_14DaySummary)
 export(baseDaysComparison)
 export(createBiDatasets_Hub)
 export(createBiDatasets_WDS)
