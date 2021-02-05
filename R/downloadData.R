@@ -161,9 +161,9 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
             BedsICUUsedOther = (BedsICUUsed - CovidICUTotal),
             VentilatorsUsedOther = (VentilatorsUsed - CovidVentilatorsUsed),
             #Force Non-Negative
-            BedsUsedOther = dplyr::if_else(BedsUsedOther < 0, 0, BedsUsedOther),
-            BedsICUUsedOther = dplyr::if_else(BedsICUUsedOther < 0, 0, BedsICUUsedOther),
-            VentilatorsUsedOther = dplyr::if_else(VentilatorsUsedOther < 0, 0, VentilatorsUsedOther),
+            BedsUsedOther = dplyr::if_else(BedsUsedOther < 0, as.integer(0), BedsUsedOther),
+            BedsICUUsedOther = dplyr::if_else(BedsICUUsedOther < 0, as.integer(0), BedsICUUsedOther),
+            VentilatorsUsedOther = dplyr::if_else(VentilatorsUsedOther < 0, as.integer(0), VentilatorsUsedOther),
 
 
             #Explicitly Calculate Totals using used and available
