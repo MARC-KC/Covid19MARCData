@@ -167,4 +167,5 @@ list2CSV(c(apiData, dfListHub, dfListWDS))
 
 ## Where does the data come from?
 
-See COVID Data Hub FAQ
+See [COVID Data Hub FAQ and Data
+Sources](https://experience.arcgis.com/experience/04aa1fd0d1184d139cfa4e3fa97fea6d/page/page_33/)
