@@ -316,8 +316,10 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     message(crayon::blue("Exporting jurisdiction bridge table with the formatted names."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    bi_PrettyJurisdictions_MARC <- Covid19MARCData::prettyJurisdictions %>% dplyr::filter(Site == 'MARC') %>% dplyr::select(-Site)
-    bi_PrettyJurisdictions_HCC <- Covid19MARCData::prettyJurisdictions %>% dplyr::filter(Site == 'HCC') %>% dplyr::select(-Site)
+    bi_PrettyJurisdictions_MARC <- Covid19MARCData::prettyJurisdictions %>% dplyr::filter(Site == 'MARC') %>% dplyr::select(-Site) %>%
+        dplyr::left_join(Covid19MARCData::popTable, by = "GeoID")
+    bi_PrettyJurisdictions_HCC <- Covid19MARCData::prettyJurisdictions %>% dplyr::filter(Site == 'HCC') %>% dplyr::select(-Site) %>%
+        dplyr::left_join(Covid19MARCData::popTable, by = "GeoID")
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
