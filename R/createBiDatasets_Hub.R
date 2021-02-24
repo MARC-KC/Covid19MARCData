@@ -113,7 +113,26 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # Weekly 7 Day Rolling With and Without Lag ####
+    message(crayon::blue("Exporting 7 day rolling averages and totals."))
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    bi_7DayRollingLag <- bi_7DayRolling %>%
+        dplyr::select(Jurisdiction, State, Region, GeoID, Date,
+                      CasesNew7DayTotal, CasesNew7DayAvg,
+                      DeathsNew7DayTotal, DeathsNew7DayAvg,
+                      TestsNew7DayTotal, TestsNew7DayAvg,
+                      TestsPositiveNew7DayAvgProportion, DeathsToCases7DayProportion, HospsToCases7DayProportion,
+                      Population, PopulationTestStandard, PositiveTestStandardProportion, PositiveTestStandard, PositiveTestStandard,
+                      KPI_PositiveTests, KPI_PopulationTests) %>%
+        dplyr::filter(Date <= (max(Date) - lagDaysCDT))
 
+    bi_7DayRollingLagHosp <- bi_7DayRolling %>%
+        dplyr::select(Jurisdiction, State, Region, GeoID, Date,
+                      CovidNew7DayTotal, CovidNew7DayAvg,
+                      HospitalsReporting7DayTotal, HospitalsReporting7DayAvg, HospitalsTotal7DayTotal, HospitalsTotal7DayAvg) %>%
+        dplyr::filter(Date <= (max(Date) - lagDaysHosp))
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -124,24 +143,12 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     #     dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
     #     dplyr::filter(dayWeek == dayWeek[which.max(Date)])
 
-    bi_7DayRollingThinLag <- bi_7DayRolling %>%
-        dplyr::select(Jurisdiction, State, Region, GeoID, Date,
-                      CasesNew7DayTotal, CasesNew7DayAvg,
-                      DeathsNew7DayTotal, DeathsNew7DayAvg,
-                      TestsNew7DayTotal, TestsNew7DayAvg,
-                      TestsPositiveNew7DayAvgProportion, DeathsToCases7DayProportion, HospsToCases7DayProportion,
-                      Population, PopulationTestStandard, PositiveTestStandardProportion, PositiveTestStandard, PositiveTestStandard,
-                      KPI_PositiveTests, KPI_PopulationTests) %>%
-        dplyr::filter(Date <= (max(Date) - lagDaysCDT)) %>%
+    bi_7DayRollingThinLag <- bi_7DayRollingLag %>%
         dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
         dplyr::filter(dayWeek == dayWeek[which.max(Date)]) %>%
         dplyr::select(-dayWeek)
 
-    bi_7DayRollingThinLagHosp <- bi_7DayRolling %>%
-        dplyr::select(Jurisdiction, State, Region, GeoID, Date,
-                      CovidNew7DayTotal, CovidNew7DayAvg,
-                      HospitalsReporting7DayTotal, HospitalsReporting7DayAvg, HospitalsTotal7DayTotal, HospitalsTotal7DayAvg) %>%
-        dplyr::filter(Date <= (max(Date) - lagDaysHosp)) %>%
+    bi_7DayRollingThinLagHosp <- bi_7DayRollingLagHosp %>%
         dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
         dplyr::filter(dayWeek == dayWeek[which.max(Date)]) %>%
         dplyr::select(-dayWeek)
