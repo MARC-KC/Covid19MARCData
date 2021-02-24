@@ -4,10 +4,12 @@
 \alias{downloadMARCCovidData}
 \title{Download MARC's COVID-19 Data}
 \usage{
-downloadMARCCovidData(dataset = c("CDT", "CDT_NewlyReported", "Hospital"))
+downloadMARCCovidData(
+  dataset = c("CDT", "CDT_NewlyReported", "Hospital", "VaccinationMO")
+)
 }
 \arguments{
-\item{dataset}{What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported', or 'Hospital'.}
+\item{dataset}{What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported' 'Hospital', or 'VaccinationMO'.}
 }
 \value{
 A tibble with the selected COVID-19 data

@@ -5,7 +5,7 @@
 #' @description Allows data to be downloaded from the MARC Data API with a
 #'   simple function.
 #'
-#' @param dataset What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported', or 'Hospital'.
+#' @param dataset What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported' 'Hospital', or 'VaccinationMO'.
 #'
 #' @return A tibble with the selected COVID-19 data
 #'
@@ -20,7 +20,7 @@
 #'
 #' }
 #' @export
-downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospital")) {
+downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospital", "VaccinationMO")) {
 
     #Match Arguments
     dataset <- match.arg(dataset)
@@ -52,7 +52,14 @@ downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospi
     }
 
 
-
+    #Download the Missouri Vaccination Data
+    if (dataset == "VaccinationMO") {
+        message(crayon::yellow("Downloading Missouri Vaccination data from the MARC Data API: https://gis2.marc2.org/marcdataapi/api/covidvaccinationmo"))
+        out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/marcdataapi/api/covidvaccinationmo') %>%
+            dplyr::mutate(Date = as.Date(Date),
+                          LastUpdated = lubridate::as_datetime(LastUpdated),
+                          LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))
+    }
 
     return(out)
 
@@ -88,7 +95,10 @@ downloadAllCovidAPIData <- function() {
     hospData <-  downloadMARCCovidData(dataset = "Hospital") %>%
         dplyr::filter(GeoID %in% Covid19MARCData::GeoIDs[['base']])
 
-    out <- list('cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData)
+    vaccMOData <- downloadMARCCovidData(dataset = "VaccinationMO")  #don't cut to base GeoID because it filters out Missouri
+
+    out <- list('cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData,
+                'vaccMOData' = vaccMOData)
 
     return(out)
 }
@@ -112,6 +122,7 @@ downloadAllCovidAPIData <- function() {
 #'   \item{cdtData}{Case, Death, and Test Data}
 #'   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
 #'   \item{hospData}{Hospital Data}
+#'   \item{vaccMOData}{Missouri Vaccination Data}
 #' }
 #'
 #' @return A list of data.frames that are used by MARC's COVID Data Hub.
@@ -223,7 +234,7 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
 
 
     out <- list(
-        'cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData,
+        'cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData, 'vaccMOData' = vaccMOData,
         'cdtHospData' = cdtHospData,
         'cdtHosp7DayRollingData' = cdtHosp7DayRollingData, 'cdtHosp14DayRollingData' = cdtHosp14DayRollingData
     )
