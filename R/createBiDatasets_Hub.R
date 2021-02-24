@@ -115,7 +115,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Weekly 7 Day Rolling With and Without Lag ####
-    message(crayon::blue("Exporting 7 day rolling averages and totals."))
+    message(crayon::blue("Exporting 7 day rolling averages and totals with Lags."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     bi_7DayRollingLag <- bi_7DayRolling %>%
         dplyr::select(Jurisdiction, State, Region, GeoID, Date,
@@ -137,7 +137,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Weekly Thinned 7 Day Rolling With and Without Lag ####
-    message(crayon::blue("Exporting thinned 7 day rolling averages and totals."))
+    message(crayon::blue("Exporting thinned 7 day rolling averages and totals with Lags."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # bi_7DayRollingThin <- bi_7DayRolling %>%
     #     dplyr::mutate(dayWeek = as.numeric(format(Date, format = "%u"))) %>%
