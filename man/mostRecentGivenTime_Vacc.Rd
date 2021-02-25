@@ -11,7 +11,7 @@ mostRecentGivenTime_Vacc(df, days, lagDays)
 
 \item{days}{Number of days to use for the time frame. A value of NA will trigger the 'All Time' summary.}
 
-\item{lagdays}{Number of days to lag the time frame.}
+\item{lagDays}{Number of days to lag the time frame.}
 }
 \description{
 Used to create the jurisdiction bar charts with time and per

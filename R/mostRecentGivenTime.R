@@ -6,7 +6,7 @@
 #'
 #' @param df Input data.frame. It is currently absorbing 'cdtHospData'.
 #' @param days Number of days to use for the time frame. A value of NA will trigger the 'All Time' summary.
-#' @param lagdays Number of days to lag the time frame.
+#' @param lagDays Number of days to lag the time frame.
 #'
 #' @details Currently only set up to create summaries for Cases, Deaths, Tests in the time period.
 #'
@@ -152,7 +152,7 @@ mostRecentGivenTime_CDT <- function(df, days, lagDays) {
 #'
 #' @param df Input data.frame. It is currently absorbing 'bi_vaccMO_DailyData'.
 #' @param days Number of days to use for the time frame. A value of NA will trigger the 'All Time' summary.
-#' @param lagdays Number of days to lag the time frame.
+#' @param lagDays Number of days to lag the time frame.
 #'
 #' @details Currently only set up to create summaries for the vaccination data in the time period.
 #'
