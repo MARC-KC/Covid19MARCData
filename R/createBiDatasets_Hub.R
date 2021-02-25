@@ -260,7 +260,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     bi_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable, function(datasetName, days, lagDays, keep, ...) {
         dataset <- eval(rlang::sym(datasetName))
 
-        out <- mostRecentGivenTime(df = dataset, days=days, lagDays=lagDays)
+        out <- mostRecentGivenTime_CDT(df = dataset, days=days, lagDays=lagDays)
 
         if (keep == "Both") {
             return(out)
