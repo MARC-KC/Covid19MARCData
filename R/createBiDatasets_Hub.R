@@ -254,7 +254,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         "cdtHospData",        30,    lagDaysCDT,  "Both",
         "cdtHospData",        60,    lagDaysCDT,  "Both",
         "cdtHospData",        90,    lagDaysCDT,  "Both",
-        "cdtHospData",        NA,    NA,       "Both"
+        "cdtHospData",        NA,    NA,          "Both"
     )
 
     bi_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable, function(datasetName, days, lagDays, keep, ...) {
@@ -302,6 +302,70 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         # COPtable(cdtHosp14DayRollingData, days = 14, lagDays = 0, measureTable = measureTable, percentChangeKPI = 5)
     ) %>% dplyr::bind_rows()
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # Vaccine Tables ####
+    message(crayon::blue("Create Vaccine Tables"))
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    ## Create Base Calculated Columns ####
+    # vaccMODataOri <- vaccMOData
+    vaccMOData <- vaccMODataOri
+    vaccMOData <- vaccMOData %>%
+        dplyr::group_by(GeoID) %>%
+        dplyr::mutate(
+            DosesAdministered_New = DosesAdministered_Total - dplyr::lag(DosesAdministered_Total, n = 1, order_by = Date),
+            RecievedFirstDose_New = RecievedFirstDose_Count - dplyr::lag(RecievedFirstDose_Count, n = 1, order_by = Date),
+            RecievedSecondDose_New = RecievedSecondDose_Count - dplyr::lag(RecievedSecondDose_Count, n = 1, order_by = Date)
+        ) %>%
+        dplyr::ungroup() %>%
+        dplyr::arrange(GeoID) %>%
+        dplyr::rename("RecievedFirstDose_Total" = "RecievedFirstDose_Count",
+                      "RecievedSecondDose_Total" = "RecievedSecondDose_Count")
+
+
+
+    ## Create 7-Day Rolling Averages and Totals ####
+    varTable <- tibble::tribble(
+        ~variable,                  ~Avg,         ~Total,     ~CalcString,
+        "DosesAdministered_New",    TRUE,         TRUE,       NA,
+        "RecievedFirstDose_New",    TRUE,         TRUE,       NA,
+        "RecievedSecondDose_New",   TRUE,         TRUE,       NA
+    )
+
+
+    vaccMO7DayRollingData <- rollSummaryXDays(df = vaccMOData, numDays = 7, varTable = varTable)
+
+
+
+    ## Create 7-Day Comparison Table ####
+    measureTable <- tibble::tribble(
+        ~measureName,                            ~upGood,
+        "DosesAdministered_New##DayTotal",       TRUE,
+        "DosesAdministered_New##DayAvg",         TRUE,
+        "RecievedFirstDose_New##DayTotal",       TRUE,
+        "RecievedFirstDose_New##DayAvg",         TRUE,
+        "RecievedSecondDose_New##DayTotal",      TRUE,
+        "RecievedSecondDose_New##DayAvg",        TRUE
+    )
+
+    vaccMO_baseWeeklyComparisonData <- baseDaysComparison(vaccMO7DayRollingData, measureTable)
+
+
+
+    ## Create Jurisdiction Bar Chart Table ####
+
+
+
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 
 
 

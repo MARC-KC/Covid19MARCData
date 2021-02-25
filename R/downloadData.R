@@ -161,7 +161,7 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
 
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    # Full Hospital Data WIth Calculations And Most Recent ####
+    # Full Hospital Data With Calculations And Most Recent ####
     message(crayon::blue("Formatting base hospital data."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     hospData <- hospData %>%
