@@ -225,10 +225,10 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
                     RecievedFirstDose <- .x$NewValue[.x$Measure == 'RecievedFirstDose']  #might need to make this calculated?
                     RecievedSecondDose <- .x$NewValue[.x$Measure == 'RecievedSecondDose']
                     .x %>% dplyr::mutate(
-                        RecievedFirstDose = RecievedFirstDose,
-                        RecievedSecondDose = RecievedSecondDose
-                        # RecievedFirstDose = dplyr::if_else(Measure == 'Tests', newCases, NA_real_),
-                        # RecievedSecondDose = dplyr::if_else(Measure == 'Tests', newTests - newCases, NA_real_)
+                        # RecievedFirstDose = RecievedFirstDose,
+                        # RecievedSecondDose = RecievedSecondDose
+                        RecievedFirstDose = dplyr::if_else(Measure == 'DosesAdministered', RecievedFirstDose, NA_real_),
+                        RecievedSecondDose = dplyr::if_else(Measure == 'DosesAdministered', RecievedSecondDose, NA_real_)
                     )
                 })
 

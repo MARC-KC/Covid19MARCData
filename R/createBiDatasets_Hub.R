@@ -384,10 +384,22 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         }
     })
     bi_vaccMO_JurisdictionBarCharts <- bi_vaccMO_JurisdictionBarCharts %>%
+        dplyr::filter(Measure == "DosesAdministered") %>%
+        dplyr::mutate(
+            RecievedFirstDose_PropPop = dplyr::case_when(
+                Raw_Per100K == 'Per100K' ~ RecievedFirstDose / 100000,
+                Raw_Per100K == 'Raw' ~ RecievedFirstDose / Population
+            ),
+            RecievedSecondDose_PropPop = dplyr::case_when(
+                Raw_Per100K == 'Per100K' ~ RecievedSecondDose / 100000,
+                Raw_Per100K == 'Raw' ~ RecievedSecondDose / Population
+            )
+        )%>%
         dplyr::mutate(Raw_Per100K = dplyr::case_when(
-            Raw_Per100K == 'Per100K' ~ glue::glue('Total {Measure} Per 100K'),
-            Raw_Per100K == 'Raw' ~ glue::glue('Total {Measure}')
-        ))
+            Raw_Per100K == 'Per100K' ~ glue::glue('Total Administered Per 100K'),
+            Raw_Per100K == 'Raw' ~ glue::glue('Total Administered')
+        )) %>%
+        dplyr::relocate(SlicerLevels, filterLevels, .after = dplyr::last_col())
 
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
