@@ -310,13 +310,11 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Vaccine Tables ####
-    message(crayon::blue("Create Vaccine Tables"))
+    message(crayon::blue("Exporting Missouri Vaccine Tables"))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     ## Create Base Calculated Columns ####
-    # vaccMODataOri <- vaccMOData
-    vaccMOData <- vaccMODataOri
-    vaccMOData <- vaccMOData %>%
+    bi_vaccMO_DailyData <- vaccMOData %>%
         dplyr::group_by(GeoID) %>%
         dplyr::mutate(
             DosesAdministered_New = DosesAdministered_Total - dplyr::lag(DosesAdministered_Total, n = 1, order_by = Date),
@@ -339,7 +337,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     )
 
 
-    vaccMO7DayRollingData <- rollSummaryXDays(df = vaccMOData, numDays = 7, varTable = varTable)
+    bi_vaccMO_7DayRollingData <- rollSummaryXDays(df = bi_vaccMO_DailyData, numDays = 7, varTable = varTable)
 
 
 
@@ -354,12 +352,42 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         "RecievedSecondDose_New##DayAvg",        TRUE
     )
 
-    vaccMO_baseWeeklyComparisonData <- baseDaysComparison(vaccMO7DayRollingData, measureTable)
+    bi_vaccMO_baseWeeklyComparisonData <- baseDaysComparison(bi_vaccMO_7DayRollingData, measureTable)
 
 
 
     ## Create Jurisdiction Bar Chart Table ####
+    mostRecentGivenHelperTable_VaccMO <- tibble::tribble(
+        ~datasetName,                 ~days, ~lagDays,    ~keep,
+        "bi_vaccMO_DailyData",        7,     0,           "Both",
+        "bi_vaccMO_DailyData",        14,    0,           "Both",
+        # "bi_vaccMO_DailyData",        30,    0,           "Both",
+        # "bi_vaccMO_DailyData",        60,    0,           "Both",
+        # "bi_vaccMO_DailyData",        90,    0,           "Both",
+        "bi_vaccMO_DailyData",        NA,    NA,          "Both"
+    )
 
+    bi_vaccMO_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable_VaccMO, function(datasetName, days, lagDays, keep, ...) {
+        dataset <- eval(rlang::sym(datasetName))
+
+        out <- mostRecentGivenTime_Vacc(df = dataset, days=days, lagDays=lagDays)
+
+        if (keep == "Both") {
+            return(out)
+        } else if (keep == "Raw") {
+            return(dplyr::filter(out, Raw_Per100K == "Raw"))
+        } else if (keep == "Per100K") {
+            return(dplyr::filter(out, Raw_Per100K == "Per100K"))
+        } else {
+            warning("The argument keep must be one of 'Both', 'Raw', or 'Per100K'. Returning NULL")
+            return(NULL)
+        }
+    })
+    bi_vaccMO_JurisdictionBarCharts <- bi_vaccMO_JurisdictionBarCharts %>%
+        dplyr::mutate(Raw_Per100K = dplyr::case_when(
+            Raw_Per100K == 'Per100K' ~ glue::glue('Total {Measure} Per 100K'),
+            Raw_Per100K == 'Raw' ~ glue::glue('Total {Measure}')
+        ))
 
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

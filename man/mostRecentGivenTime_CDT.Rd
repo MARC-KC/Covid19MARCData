@@ -2,7 +2,7 @@
 % Please edit documentation in R/mostRecentGivenTime.R
 \name{mostRecentGivenTime_CDT}
 \alias{mostRecentGivenTime_CDT}
-\title{Most Recent Data Given A Time Period}
+\title{Most CDT Recent Data Given A Time Period}
 \usage{
 mostRecentGivenTime_CDT(df, days, lagDays)
 }
