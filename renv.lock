@@ -18,15 +18,16 @@
     },
     "Covid19MARCInternal": {
       "Package": "Covid19MARCInternal",
-      "Version": "0.2.1",
+      "Version": "0.3.11",
       "Source": "GitHub",
+      "Remotes": "github::MARC-KC/marcR",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteUsername": "MARC-KC",
       "RemoteRepo": "Covid19MARCInternal",
-      "RemoteRef": "main",
-      "RemoteSha": "ae61f09ba2cd89fa6488254076c24e46e3aab6d2",
-      "Hash": "a8cc765e99b10b67c92bb4b2fe06173c"
+      "RemoteUsername": "MARC-KC",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "7e2f1f06c80e8f5337a09c6ddd58617b9311f8c9",
+      "Hash": "884e907abdbac916af959c7aa155a748"
     },
     "DBI": {
       "Package": "DBI",
@@ -464,15 +465,16 @@
     },
     "marcR": {
       "Package": "marcR",
-      "Version": "0.5.0",
+      "Version": "0.5.3",
       "Source": "GitHub",
+      "Remotes": "github::yonghah/esri2sf",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteUsername": "MARC-KC",
       "RemoteRepo": "marcR",
-      "RemoteRef": "main",
-      "RemoteSha": "34fe3b2dc4a5cc908c06a3e5e393f3383ccdfcc2",
-      "Hash": "a03b8814363c2a3787dc0551727158e8"
+      "RemoteUsername": "MARC-KC",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "cc8d58663ae94b60f0fff32c27799e030ac8f4f2",
+      "Hash": "40921c164766a05ecfcd0295c117307e"
     },
     "markdown": {
       "Package": "markdown",
