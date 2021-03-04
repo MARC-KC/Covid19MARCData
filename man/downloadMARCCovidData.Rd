@@ -5,11 +5,11 @@
 \title{Download MARC's COVID-19 Data}
 \usage{
 downloadMARCCovidData(
-  dataset = c("CDT", "CDT_NewlyReported", "Hospital", "VaccinationMO")
+  dataset = c("CDT", "CDT_NewlyReported", "Hospital", "Vaccination")
 )
 }
 \arguments{
-\item{dataset}{What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported' 'Hospital', or 'VaccinationMO'.}
+\item{dataset}{What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported' 'Hospital', or 'Vaccination'.}
 }
 \value{
 A tibble with the selected COVID-19 data
@@ -21,9 +21,9 @@ Allows data to be downloaded from the MARC Data API with a
 \examples{
 \dontrun{
 
-cdtData <- downloadBaseData(type = "CDT")
+cdtData <- downloadBaseData(dataset = "CDT")
 
-cdtNRData <-  downloadBaseData(type = "CDT_NewlyReported")
+cdtNRData <-  downloadBaseData(dataset = "CDT_NewlyReported")
 
 
 }

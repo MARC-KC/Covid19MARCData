@@ -26,6 +26,6 @@ Create the Base Datasets that all of the COVID-19 Data Hub is ran from
   \item{cdtData}{Case, Death, and Test Data}
   \item{cdtNRData}{Newly Reported Case, Death, and Test Data}
   \item{hospData}{Hospital Data}
-  \item{vaccMOData}{Missouri Vaccination Data}
+  \item{vaccData}{Vaccination Data}
 }
 }

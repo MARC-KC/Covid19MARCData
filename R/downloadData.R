@@ -5,7 +5,8 @@
 #' @description Allows data to be downloaded from the MARC Data API with a
 #'   simple function.
 #'
-#' @param dataset What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported' 'Hospital', or 'Vaccination'.
+#' @param dataset What dataset should be downloaded? Select one of 'CDT',
+#'   'CDT_NewlyReported' 'Hospital', or 'Vaccination'.
 #'
 #' @return A tibble with the selected COVID-19 data
 #'
@@ -13,9 +14,9 @@
 #' @examples
 #' \dontrun{
 #'
-#' cdtData <- downloadBaseData(type = "CDT")
+#' cdtData <- downloadBaseData(dataset = "CDT")
 #'
-#' cdtNRData <-  downloadBaseData(type = "CDT_NewlyReported")
+#' cdtNRData <-  downloadBaseData(dataset = "CDT_NewlyReported")
 #'
 #'
 #' }
@@ -61,8 +62,7 @@ downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospi
                           LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))
     }
 
-    return(out)
-
+    out
 }
 
 
@@ -100,7 +100,7 @@ downloadAllCovidAPIData <- function() {
     out <- list('cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData,
                 'vaccData' = vaccData)
 
-    return(out)
+    out
 }
 
 
