@@ -314,17 +314,17 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     ## Create Base Calculated Columns ####
-    bi_vaccMO_DailyData <- vaccMOData %>%
+    bi_vacc_DailyData <- vaccData %>%
         dplyr::group_by(GeoID) %>%
         dplyr::mutate(
             DosesAdministered_New = DosesAdministered_Total - dplyr::lag(DosesAdministered_Total, n = 1, order_by = Date),
-            RecievedFirstDose_New = RecievedFirstDose_Count - dplyr::lag(RecievedFirstDose_Count, n = 1, order_by = Date),
-            RecievedSecondDose_New = RecievedSecondDose_Count - dplyr::lag(RecievedSecondDose_Count, n = 1, order_by = Date)
+            RegimenInitiated_New = RegimenInitiated_Count - dplyr::lag(RegimenInitiated_Count, n = 1, order_by = Date),
+            RegimenCompleted_New = RegimenCompleted_Count - dplyr::lag(RegimenCompleted_Count, n = 1, order_by = Date)
         ) %>%
         dplyr::ungroup() %>%
         dplyr::arrange(GeoID) %>%
-        dplyr::rename("RecievedFirstDose_Total" = "RecievedFirstDose_Count",
-                      "RecievedSecondDose_Total" = "RecievedSecondDose_Count")
+        dplyr::rename("RegimenInitiated_Total" = "RegimenInitiated_Count",
+                      "RegimenCompleted_Total" = "RegimenCompleted_Count")
 
 
 
@@ -332,12 +332,12 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     varTable <- tibble::tribble(
         ~variable,                  ~Avg,         ~Total,     ~CalcString,
         "DosesAdministered_New",    TRUE,         TRUE,       NA,
-        "RecievedFirstDose_New",    TRUE,         TRUE,       NA,
-        "RecievedSecondDose_New",   TRUE,         TRUE,       NA
+        "RegimenInitiated_New",    TRUE,         TRUE,       NA,
+        "RegimenCompleted_New",   TRUE,         TRUE,       NA
     )
 
 
-    bi_vaccMO_7DayRollingData <- rollSummaryXDays(df = bi_vaccMO_DailyData, numDays = 7, varTable = varTable)
+    bi_vacc_7DayRollingData <- rollSummaryXDays(df = bi_vacc_DailyData, numDays = 7, varTable = varTable)
 
 
 
@@ -346,28 +346,28 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         ~measureName,                            ~upGood,
         "DosesAdministered_New##DayTotal",       TRUE,
         "DosesAdministered_New##DayAvg",         TRUE,
-        "RecievedFirstDose_New##DayTotal",       TRUE,
-        "RecievedFirstDose_New##DayAvg",         TRUE,
-        "RecievedSecondDose_New##DayTotal",      TRUE,
-        "RecievedSecondDose_New##DayAvg",        TRUE
+        "RegimenInitiated_New##DayTotal",       TRUE,
+        "RegimenInitiated_New##DayAvg",         TRUE,
+        "RegimenCompleted_New##DayTotal",      TRUE,
+        "RegimenCompleted_New##DayAvg",        TRUE
     )
 
-    bi_vaccMO_baseWeeklyComparisonData <- baseDaysComparison(bi_vaccMO_7DayRollingData, measureTable)
+    bi_vacc_baseWeeklyComparisonData <- baseDaysComparison(bi_vacc_7DayRollingData, measureTable)
 
 
 
     ## Create Jurisdiction Bar Chart Table ####
-    mostRecentGivenHelperTable_VaccMO <- tibble::tribble(
-        ~datasetName,                 ~days, ~lagDays,    ~keep,
-        "bi_vaccMO_DailyData",        7,     0,           "Both",
-        "bi_vaccMO_DailyData",        14,    0,           "Both",
-        # "bi_vaccMO_DailyData",        30,    0,           "Both",
-        # "bi_vaccMO_DailyData",        60,    0,           "Both",
-        # "bi_vaccMO_DailyData",        90,    0,           "Both",
-        "bi_vaccMO_DailyData",        NA,    NA,          "Both"
+    mostRecentGivenHelperTable_Vacc <- tibble::tribble(
+        ~datasetName,               ~days, ~lagDays,    ~keep,
+        "bi_vacc_DailyData",        7,     0,           "Both",
+        "bi_vacc_DailyData",        14,    0,           "Both",
+        # "bi_vacc_DailyData",        30,    0,           "Both",
+        # "bi_vacc_DailyData",        60,    0,           "Both",
+        # "bi_vacc_DailyData",        90,    0,           "Both",
+        "bi_vacc_DailyData",        NA,    NA,          "Both"
     )
 
-    bi_vaccMO_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable_VaccMO, function(datasetName, days, lagDays, keep, ...) {
+    bi_vacc_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable_Vacc, function(datasetName, days, lagDays, keep, ...) {
         dataset <- eval(rlang::sym(datasetName))
 
         out <- mostRecentGivenTime_Vacc(df = dataset, days=days, lagDays=lagDays)
@@ -383,16 +383,16 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
             return(NULL)
         }
     })
-    bi_vaccMO_JurisdictionBarCharts <- bi_vaccMO_JurisdictionBarCharts %>%
+    bi_vacc_JurisdictionBarCharts <- bi_vacc_JurisdictionBarCharts %>%
         dplyr::filter(Measure == "DosesAdministered") %>%
         dplyr::mutate(
-            RecievedFirstDose_PropPop = dplyr::case_when(
-                Raw_Per100K == 'Per100K' ~ RecievedFirstDose / 100000,
-                Raw_Per100K == 'Raw' ~ RecievedFirstDose / Population
+            RegimenInitiated_PropPop = dplyr::case_when(
+                Raw_Per100K == 'Per100K' ~ RegimenInitiated / 100000,
+                Raw_Per100K == 'Raw' ~ RegimenInitiated / Population
             ),
-            RecievedSecondDose_PropPop = dplyr::case_when(
-                Raw_Per100K == 'Per100K' ~ RecievedSecondDose / 100000,
-                Raw_Per100K == 'Raw' ~ RecievedSecondDose / Population
+            RegimenCompleted_PropPop = dplyr::case_when(
+                Raw_Per100K == 'Per100K' ~ RegimenCompleted / 100000,
+                Raw_Per100K == 'Raw' ~ RegimenCompleted / Population
             )
         )%>%
         dplyr::mutate(Raw_Per100K = dplyr::case_when(

@@ -167,8 +167,8 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
         calcTable <- tibble::tribble(
             ~measure,
             "DosesAdministered_Total",
-            "RecievedFirstDose_Total",
-            "RecievedSecondDose_Total"
+            "RegimenInitiated_Total",
+            "RegimenCompleted_Total"
         ) %>%
             dplyr::mutate(
                 measureShort = stringr::str_remove(measure, "_Total"),
@@ -185,7 +185,7 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
                                    data = purrr::map(GeoID, ~df[df$GeoID == .x,])
         )
 
-        .x = df_split[["data"]][[1]]
+        # .x = df_split[["data"]][[3]]
         #Conduct the calculations on the formatted data and
         out <- purrr::map_dfr(df_split[["data"]], ~{
 
@@ -195,7 +195,7 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
 
             #Select and create base columns
             outdf <- outdf %>%
-                dplyr::select(Jurisdiction, State, Region, GeoID, Date, DosesAdministered_Total, RecievedFirstDose_Total, RecievedSecondDose_Total, Population) %>%
+                dplyr::select(Jurisdiction, State, Region, GeoID, Date, DosesAdministered_Total, RegimenInitiated_Total, RegimenCompleted_Total, Population) %>%
                 dplyr::mutate(days = days, lagDays = lagDays)
 
             #Lag the data with mutate so the different can be calculated in the totals then filter out the most recent record
@@ -212,7 +212,7 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
             outdf <- outdf %>%
                 dplyr::select(-c(calcTable$measure, calcTable$previousName)) %>%
                 tidyr::pivot_longer(data = .,
-                                    cols = DosesAdministeredNewRaw:RecievedSecondDoseNewPer100K,
+                                    cols = DosesAdministeredNewRaw:RegimenCompletedNewPer100K,
                                     names_to = c("Measure", "Raw_Per100K"),
                                     names_pattern = "(.*)New(.*)",
                                     values_to = "NewValue"
@@ -222,13 +222,13 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
             outdf <- outdf %>%
                 dplyr::group_by(Raw_Per100K) %>% dplyr::group_split() %>%
                 purrr::map_dfr(~{
-                    RecievedFirstDose <- .x$NewValue[.x$Measure == 'RecievedFirstDose']  #might need to make this calculated?
-                    RecievedSecondDose <- .x$NewValue[.x$Measure == 'RecievedSecondDose']
+                    RegimenInitiated <- .x$NewValue[.x$Measure == 'RegimenInitiated']  #might need to make this calculated?
+                    RegimenCompleted <- .x$NewValue[.x$Measure == 'RegimenCompleted']
                     .x %>% dplyr::mutate(
-                        # RecievedFirstDose = RecievedFirstDose,
-                        # RecievedSecondDose = RecievedSecondDose
-                        RecievedFirstDose = dplyr::if_else(Measure == 'DosesAdministered', RecievedFirstDose, NA_real_),
-                        RecievedSecondDose = dplyr::if_else(Measure == 'DosesAdministered', RecievedSecondDose, NA_real_)
+                        # RegimenInitiated = RegimenInitiated,
+                        # RegimenCompleted = RegimenCompleted
+                        RegimenInitiated = dplyr::if_else(Measure == 'DosesAdministered', RegimenInitiated, NA_real_),
+                        RegimenCompleted = dplyr::if_else(Measure == 'DosesAdministered', RegimenCompleted, NA_real_)
                     )
                 })
 
@@ -248,18 +248,18 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
 
         #Select and create base columns and filter for the most recent data
         out <- df %>%
-            dplyr::select(Jurisdiction, State, Region, GeoID, Date, Population, DosesAdministered_Total, RecievedFirstDose_Total, RecievedSecondDose_Total) %>%
+            dplyr::select(Jurisdiction, State, Region, GeoID, Date, Population, DosesAdministered_Total, RegimenInitiated_Total, RegimenCompleted_Total) %>%
             marcR::groupby_rank(GeoID, rankby = Date, filterIDs = 1) %>%
             dplyr::mutate(DosesAdministeredPer100K = DosesAdministered_Total / Population * 100000,
-                          RecievedFirstDosePer100K = RecievedFirstDose_Total / Population * 100000,
-                          RecievedSecondDosePer100K = RecievedSecondDose_Total / Population * 100000)
+                          RegimenInitiatedPer100K = RegimenInitiated_Total / Population * 100000,
+                          RegimenCompletedPer100K = RegimenCompleted_Total / Population * 100000)
 
         #Pivot the data into long format and fix the factors in Raw_Per100K
         out <- out %>%
             tidyr::pivot_longer(data = .,
-                                cols = DosesAdministered_Total:RecievedSecondDosePer100K,
+                                cols = DosesAdministered_Total:RegimenCompletedPer100K,
                                 names_to = c("Measure", "Raw_Per100K"),
-                                names_pattern = "(DosesAdministered|RecievedFirstDose|RecievedSecondDose)(.*)",
+                                names_pattern = "(DosesAdministered|RegimenInitiated|RegimenCompleted)(.*)",
                                 values_to = "NewValue"
             ) %>%
             dplyr::mutate(Raw_Per100K = dplyr::if_else(Raw_Per100K == "_Total", "Raw", Raw_Per100K))
@@ -269,13 +269,13 @@ mostRecentGivenTime_Vacc <- function(df, days, lagDays) {
         out <- out %>%
             dplyr::group_by(GeoID, Raw_Per100K) %>% dplyr::group_split() %>%
             purrr::map_dfr(~{
-                RecievedFirstDose <- .x$NewValue[.x$Measure == 'RecievedFirstDose']  #might need to make this calculated?
-                RecievedSecondDose <- .x$NewValue[.x$Measure == 'RecievedSecondDose']
+                RegimenInitiated <- .x$NewValue[.x$Measure == 'RegimenInitiated']  #might need to make this calculated?
+                RegimenCompleted <- .x$NewValue[.x$Measure == 'RegimenCompleted']
                 .x %>% dplyr::mutate(
-                    RecievedFirstDose = RecievedFirstDose,
-                    RecievedSecondDose = RecievedSecondDose
-                    # RecievedFirstDose = dplyr::if_else(Measure == 'Tests', newCases, NA_real_),
-                    # RecievedSecondDose = dplyr::if_else(Measure == 'Tests', newTests - newCases, NA_real_)
+                    # RegimenInitiated = RegimenInitiated,
+                    # RegimenCompleted = RegimenCompleted
+                    RegimenInitiated = dplyr::if_else(Measure == 'DosesAdministered', RegimenInitiated, NA_real_),
+                    RegimenCompleted = dplyr::if_else(Measure == 'DosesAdministered', RegimenCompleted, NA_real_)
                 )
             })
 
