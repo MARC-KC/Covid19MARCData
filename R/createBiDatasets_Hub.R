@@ -324,7 +324,11 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         dplyr::ungroup() %>%
         dplyr::arrange(GeoID) %>%
         dplyr::rename("RegimenInitiated_Total" = "RegimenInitiated_Count",
-                      "RegimenCompleted_Total" = "RegimenCompleted_Count")
+                      "RegimenCompleted_Total" = "RegimenCompleted_Count") %>%
+        dplyr::mutate(
+            RegimenInitiated_PropPop = RegimenInitiated_Total / Population,
+            RegimenCompleted_PropPop = RegimenCompleted_Total / Population
+        )
 
 
 
