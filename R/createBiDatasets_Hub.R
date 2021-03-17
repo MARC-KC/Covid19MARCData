@@ -310,7 +310,7 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # Vaccine Tables ####
-    message(crayon::blue("Exporting Missouri Vaccine Tables"))
+    message(crayon::blue("Exporting Vaccine Tables"))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     ## Create Base Calculated Columns ####

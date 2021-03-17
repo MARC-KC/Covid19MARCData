@@ -9,7 +9,8 @@ downloadMARCCovidData(
 )
 }
 \arguments{
-\item{dataset}{What dataset should be downloaded? Select one of 'CDT', 'CDT_NewlyReported' 'Hospital', or 'Vaccination'.}
+\item{dataset}{What dataset should be downloaded? Select one of 'CDT',
+'CDT_NewlyReported' 'Hospital', or 'Vaccination'.}
 }
 \value{
 A tibble with the selected COVID-19 data
