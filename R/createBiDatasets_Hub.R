@@ -400,8 +400,8 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
             )
         )%>%
         dplyr::mutate(Raw_Per100K = dplyr::case_when(
-            Raw_Per100K == 'Per100K' ~ glue::glue('Total Administered Per 100K'),
-            Raw_Per100K == 'Raw' ~ glue::glue('Total Administered')
+            Raw_Per100K == 'Per100K' ~ glue::glue('Total Per 100K'),
+            Raw_Per100K == 'Raw' ~ glue::glue('Total')
         )) %>%
         dplyr::relocate(SlicerLevels, filterLevels, .after = dplyr::last_col())
 
