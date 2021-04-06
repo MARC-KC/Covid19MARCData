@@ -208,6 +208,17 @@ createBiDatasets_WDS <- function(baseDataList = getBaseCovidData(),
 
 
 
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # #Vaccination Data ####
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    bi_WDS_RegionVacc <- vaccData %>%
+        dplyr::filter(GeoID %in% c('MARC', '20MARCReg', '29MARCReg', 'HCC'),
+                      (Date == bi_WDS_HelperTable[['Date1']][bi_WDS_HelperTable[['ID_Name']] == "ReportCutoffDate"] |
+                           Date == max(Date)))
+
+    #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
