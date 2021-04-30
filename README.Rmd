@@ -35,7 +35,9 @@ These files are updated as part of our process for pushing updated data to our p
 *  Newly Reported Case, Death, and Test Data: </br><https://gis2.marc2.org/MARCDataAPI/api/covidcasedeathtestnewlyreported>
     *  This is the time series of Newly Reported Case, Death, Test data that MARC uses to provide an estimate of how many Cases, Deaths, and Tests were reported in the last 24 hours similar to how the media reports these values. This data is not back-updated.
 *  Hospital Data: </br><https://gis2.marc2.org/MARCDataAPI/api/covidhospital>
-    *  This is the time series of the back-updated Hospital data that MARC uses
+    *  This is the time series of the back-updated Hospital data that MARC uses  
+*  Vaccination Data (Local/State Sources): </br><https://gis2.marc2.org/MARCDataAPI/api/covidvaccination>
+    *  This is the time series of the vaccination data that MARC uses  
 *  **Note** The LastUpdated columns are in UTC time if downloading directly from the API. The time conversion to 'America/Chicago'/'Central' is implemented when downloading from the R package with the function `downloadMARCCovidData()`
 
 
@@ -82,6 +84,9 @@ cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported")
 
 #Hospital Data
 hospData <-  downloadMARCCovidData(dataset = "Hospital")
+
+#Vaccination Data
+vaccData <-  downloadMARCCovidData(dataset = "Vaccination")
 ```
 
 Or you can download all three of these datasets with a single command as a list of data.frames:
