@@ -6,7 +6,7 @@
 #'   simple function.
 #'
 #' @param dataset What dataset should be downloaded? Select one of 'CDT',
-#'   'CDT_NewlyReported' 'Hospital', or 'Vaccination'.
+#'   'CDT_NewlyReported' 'Hospital', 'Vaccination', or 'VaccinationCDC'.
 #'
 #' @return A tibble with the selected COVID-19 data
 #'
@@ -21,7 +21,7 @@
 #'
 #' }
 #' @export
-downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospital", "Vaccination")) {
+downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospital", "Vaccination", "VaccinationCDC")) {
 
     #Match Arguments
     dataset <- match.arg(dataset)
@@ -62,6 +62,16 @@ downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospi
                           LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))
     }
 
+    #Download the Vaccination Data
+    if (dataset == "VaccinationCDC") {
+        message(crayon::yellow("Downloading CDC Vaccination data from the MARC Data API: https://gis2.marc2.org/marcdataapi/api/covidvaccinationcdc"))
+        # out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/marcdataapi/api/covidvaccinationcdc') %>%
+        out <- marcR::MARCDataAPI_read('https://gisstage.marc2.org/marcdataapi/api/covidvaccinationcdc') %>%
+            dplyr::mutate(Date = as.Date(Date),
+                          LastUpdated = lubridate::as_datetime(LastUpdated),
+                          LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))
+    }
+
     out
 }
 
@@ -97,8 +107,10 @@ downloadAllCovidAPIData <- function() {
 
     vaccData <- downloadMARCCovidData(dataset = "Vaccination")  #don't cut to base GeoID because it filters out Missouri
 
+    vaccCDCData <- downloadMARCCovidData(dataset = "VaccinationCDC")
+
     out <- list('cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData,
-                'vaccData' = vaccData)
+                'vaccData' = vaccData, "vaccCDCData" = vaccCDCData)
 
     out
 }
@@ -234,7 +246,7 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
 
 
     out <- list(
-        'cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData, 'vaccData' = vaccData,
+        'cdtData' = cdtData, 'cdtNRData' = cdtNRData, 'hospData' = hospData, 'vaccData' = vaccData, "vaccCDCData" = vaccCDCData,
         'cdtHospData' = cdtHospData,
         'cdtHosp7DayRollingData' = cdtHosp7DayRollingData, 'cdtHosp14DayRollingData' = cdtHosp14DayRollingData
     )

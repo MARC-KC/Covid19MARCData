@@ -406,6 +406,10 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         dplyr::relocate(SlicerLevels, filterLevels, .after = dplyr::last_col())
 
 
+
+    #Add CDC vaccination table
+    bi_vacc_DailyData_CDC <- vaccCDCData
+
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
