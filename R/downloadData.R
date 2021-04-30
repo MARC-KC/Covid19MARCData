@@ -65,8 +65,7 @@ downloadMARCCovidData <- function(dataset = c("CDT", "CDT_NewlyReported", "Hospi
     #Download the Vaccination Data
     if (dataset == "VaccinationCDC") {
         message(crayon::yellow("Downloading CDC Vaccination data from the MARC Data API: https://gis2.marc2.org/marcdataapi/api/covidvaccinationcdc"))
-        # out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/marcdataapi/api/covidvaccinationcdc') %>%
-        out <- marcR::MARCDataAPI_read('https://gisstage.marc2.org/marcdataapi/api/covidvaccinationcdc') %>%
+        out <- marcR::MARCDataAPI_read('https://gis2.marc2.org/marcdataapi/api/covidvaccinationcdc') %>%
             dplyr::mutate(Date = as.Date(Date),
                           LastUpdated = lubridate::as_datetime(LastUpdated),
                           LastUpdated = lubridate::with_tz(LastUpdated, "America/Chicago"))

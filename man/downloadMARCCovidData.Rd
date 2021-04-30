@@ -5,12 +5,12 @@
 \title{Download MARC's COVID-19 Data}
 \usage{
 downloadMARCCovidData(
-  dataset = c("CDT", "CDT_NewlyReported", "Hospital", "Vaccination")
+  dataset = c("CDT", "CDT_NewlyReported", "Hospital", "Vaccination", "VaccinationCDC")
 )
 }
 \arguments{
 \item{dataset}{What dataset should be downloaded? Select one of 'CDT',
-'CDT_NewlyReported' 'Hospital', or 'Vaccination'.}
+'CDT_NewlyReported' 'Hospital', 'Vaccination', or 'VaccinationCDC'.}
 }
 \value{
 A tibble with the selected COVID-19 data
