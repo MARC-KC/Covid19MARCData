@@ -45,6 +45,9 @@ API.
 -   Vaccination Data (Local/State Sources):
     </br><https://gis2.marc2.org/MARCDataAPI/api/covidvaccination>
     -   This is the time series of the vaccination data that MARC uses  
+-   Vaccination Data (CDC Source):
+    </br><https://gis2.marc2.org/MARCDataAPI/api/covidvaccinationcdc>
+    -   This is the time series of the vaccination data that MARC uses  
 -   **Note** The LastUpdated columns are in UTC time if downloading
     directly from the API. The time conversion to
     ‘America/Chicago’/‘Central’ is implemented when downloading from the
@@ -110,8 +113,11 @@ cdtNRData <-  downloadMARCCovidData(dataset = "CDT_NewlyReported")
 #Hospital Data
 hospData <-  downloadMARCCovidData(dataset = "Hospital")
 
-#Vaccination Data
+#State/Local Vaccination Data
 vaccData <-  downloadMARCCovidData(dataset = "Vaccination")
+
+#CDC Vaccination Data
+vaccCDCData <-  downloadMARCCovidData(dataset = "VaccinationCDC")
 ```
 
 Or you can download all three of these datasets with a single command as
