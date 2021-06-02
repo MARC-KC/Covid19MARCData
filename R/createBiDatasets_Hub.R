@@ -410,6 +410,39 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     #Add CDC vaccination table
     bi_vacc_DailyData_CDC <- vaccCDCData
 
+
+    ## Create Jurisdiction Bar Chart Table ####
+    mostRecentGivenHelperTable_Vacc_CDC <- tibble::tribble(
+        ~datasetName,                   ~days, ~lagDays,    ~keep,
+        "bi_vacc_DailyData_CDC",        7,     0,           "Both",
+        "bi_vacc_DailyData_CDC",        14,    0,           "Both",
+        # "bi_vacc_DailyData_CDC",        30,    0,           "Both",
+        # "bi_vacc_DailyData_CDC",        60,    0,           "Both",
+        # "bi_vacc_DailyData_CDC",        90,    0,           "Both",
+        "bi_vacc_DailyData_CDC",        NA,    NA,          "Both"
+    )
+
+
+    bi_vacc_CDC_JurisdictionBarCharts <- purrr::pmap_dfr(mostRecentGivenHelperTable_Vacc_CDC, function(datasetName, days, lagDays, keep, ...) {
+        dataset <- eval(rlang::sym(datasetName))
+
+        out <- mostRecentGivenTime_Vacc_CDC(df = dataset, days=days, lagDays=lagDays)
+
+        if (keep == "Both") {
+            return(out)
+        } else if (keep == "Raw") {
+            return(dplyr::filter(out, Raw_Per100K == "Raw"))
+        } else if (keep == "Per100K") {
+            return(dplyr::filter(out, Raw_Per100K == "Per100K"))
+        } else {
+            warning("The argument keep must be one of 'Both', 'Raw', or 'Per100K'. Returning NULL")
+            return(NULL)
+        }
+    })
+
+
+
+
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
