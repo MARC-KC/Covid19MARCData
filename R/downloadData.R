@@ -220,18 +220,28 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
 
     vaccCDCData <- vaccCDCData %>%
         dplyr::mutate(
-        # Calculate Vaccines Completed 12-17
+            # Calculate Vaccines Completed 12-17
             RegimenCompleted_Total12to17 = RegimenCompleted_TotalGTE12 - RegimenCompleted_TotalGTE18,
-            RegimenCompleted_Total12to17Prop = (RegimenCompleted_Total12to17)/(PopulationGTE12 - PopulationGTE18),
-        # Calculate Vaccines Completed 18 - 65
+            Population_12to17 = PopulationGTE12 - PopulationGTE18,
+            RegimenCompleted_Total12to17Prop = (RegimenCompleted_Total12to17)/Population_12to17,
+            NotFullyVaccinated_12to17 = Population_12to17 - RegimenCompleted_Total12to17,
+            NotFullyVaccinated_12to17Prop = NotFullyVaccinated_12to17/Population_12to17,
+            # Calculate Vaccines Completed 18 - 65
             RegimenCompleted_Total18to65 = RegimenCompleted_TotalGTE18 - RegimenCompleted_TotalGTE65,
-            RegimenCompleted_Total18to65Prop = (RegimenCompleted_Total18to65)/(PopulationGTE18 - PopulationGTE65),
-        # Calculate Vaccines Initiated 12-17
+            Population_18to65 = PopulationGTE18 - PopulationGTE65,
+            RegimenCompleted_Total18to65Prop = (RegimenCompleted_Total18to65)/Population_18to65,
+            NotFullyVaccinated_18to65 = Population_18to65 - RegimenCompleted_Total18to65,
+            NotFullyVaccinated_18to65Prop = NotFullyVaccinated_18to65 / Population_18to65,
+            # Calculate Vaccines Initiated 12-17
             RegimenInitiated_Total12to17 = RegimenInitiated_TotalGTE12 - RegimenInitiated_TotalGTE18,
-            RegimenInitiated_Total12to17Prop = (RegimenInitiated_Total12to17)/(PopulationGTE12 - PopulationGTE18),
-        # Calculate Vaccines Initiated 18 - 65
+            RegimenInitiated_Total12to17Prop = (RegimenInitiated_Total12to17)/Population_12to17,
+            Initiated_NotCompleted_Total12to17 = RegimenInitiated_Total12to17 - RegimenCompleted_Total12to17,
+            Initiated_NotCompleted_Total12to17Prop = Initiated_NotCompleted_Total12to17 / Population_12to17,
+            # Calculate Vaccines Initiated 18 - 65
             RegimenInitiated_Total18to65 = RegimenInitiated_TotalGTE18 - RegimenInitiated_TotalGTE65,
-            RegimenInitiated_Total18to65Prop = (RegimenInitiated_Total18to65)/(PopulationGTE18 - PopulationGTE65)
+            RegimenInitiated_Total18to65Prop = (RegimenInitiated_Total18to65)/Population_18to65,
+            Initiated_NotCompleted_Total18to65 = RegimenInitiated_Total18to65 - RegimenCompleted_Total18to65,
+            Initiated_NotCompleted_Total18to65Prop = Initiated_NotCompleted_Total18to65 / Population_18to65
         )
 
 
