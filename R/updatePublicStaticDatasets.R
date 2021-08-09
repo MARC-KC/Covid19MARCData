@@ -24,7 +24,7 @@ checkPublicStaticDatasets <- function() {
             !(nrow(dplyr::distinct(dplyr::bind_rows(popTable, popTableInternal))) == nrow(popTable)) |
             !identical(GeoIDs, GeoIDsInternal) |
             !(nrow(dplyr::distinct(dplyr::bind_rows(prettyJurisdictions, prettyJurisdictionsInternal))) == nrow(prettyJurisdictions))) {
-            packageStartupMessage('Data sets need updated. Open the Covid10MARCData repository, run devtools::load_all(), then run updatePublicStaticDatasets()')
+            packageStartupMessage('Data sets need updated. Open the Covid19MARCData repository, run devtools::load_all(), then run updatePublicStaticDatasets()')
         } else {
             # packageStartupMessage('1')
         }
