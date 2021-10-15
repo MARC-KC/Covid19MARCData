@@ -31,6 +31,9 @@
 #'
 #' @export
 
+# baseDataList = getBaseCovidData()
+# lagDaysCDT = 10
+# lagDaysHosp = 2
 createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT = 10, lagDaysHosp = 2) {
 
 
@@ -410,12 +413,50 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     #Add CDC vaccination table
     bi_vacc_DailyData_CDC <- vaccCDCData
 
+    #Add CDC vaccination rate table (newly vaccinated)
+    bi_vacc_DailyDataRate_CDC <-
+        vaccCDCData %>%
+            # Total Population
+            marcR::groupby_lag(GeoID, lagCol = RegimenCompleted_Total, newCol = RegimenCompleted_Total_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenCompleted_Total_Rate = RegimenCompleted_Total - RegimenCompleted_Total_Prev) %>%
+
+            marcR::groupby_lag(GeoID, lagCol = RegimenInitiated_Total, newCol = RegimenInitiated_Total_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenInitiated_Total_Rate = RegimenInitiated_Total - RegimenInitiated_Total_Prev) %>%
+
+            # GTE18
+            marcR::groupby_lag(GeoID, lagCol = RegimenCompleted_TotalGTE18, newCol = RegimenCompleted_TotalGTE18_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenCompleted_TotalGTE18_Rate = RegimenCompleted_TotalGTE18 - RegimenCompleted_TotalGTE18_Prev) %>%
+
+            marcR::groupby_lag(GeoID, lagCol = RegimenInitiated_TotalGTE18, newCol = RegimenInitiated_TotalGTE18_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenInitiated_TotalGTE18_Rate = RegimenInitiated_TotalGTE18 - RegimenInitiated_TotalGTE18_Prev) %>%
+
+            # GTE65
+            marcR::groupby_lag(GeoID, lagCol = RegimenCompleted_TotalGTE65, newCol = RegimenCompleted_TotalGTE65_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenCompleted_TotalGTE65_Rate = RegimenCompleted_TotalGTE65 - RegimenCompleted_TotalGTE65_Prev) %>%
+
+            marcR::groupby_lag(GeoID, lagCol = RegimenInitiated_TotalGTE65, newCol = RegimenInitiated_TotalGTE65_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenInitiated_TotalGTE65_Rate = RegimenInitiated_TotalGTE65 - RegimenInitiated_TotalGTE65_Prev) %>%
+
+            # 12 - 17
+            marcR::groupby_lag(GeoID, lagCol = RegimenCompleted_Total12to17, newCol = RegimenCompleted_Total12to17_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenCompleted_Total12to17_Rate = RegimenCompleted_Total12to17 - RegimenCompleted_Total12to17_Prev) %>%
+
+            marcR::groupby_lag(GeoID, lagCol = RegimenInitiated_Total12to17, newCol = RegimenInitiated_Total12to17_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenInitiated_Total12to17_Rate = RegimenInitiated_Total12to17 - RegimenInitiated_Total12to17_Prev) %>%
+
+            # 18 - 65
+            marcR::groupby_lag(GeoID, lagCol = RegimenCompleted_Total18to65, newCol = RegimenCompleted_Total18to65_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenCompleted_Total18to65_Rate = RegimenCompleted_Total18to65 - RegimenCompleted_Total18to65_Prev) %>%
+
+            marcR::groupby_lag(GeoID, lagCol = RegimenInitiated_Total18to65, newCol = RegimenInitiated_Total18to65_Prev, n = 1, order_by = Date) %>%
+            dplyr::mutate(RegimenInitiated_Total18to65_Rate = RegimenInitiated_Total18to65 - RegimenInitiated_Total18to65_Prev) %>%
+
+            dplyr::select(Jurisdiction, GeoID, Region, State, Date, dplyr::ends_with("_Rate"))
+
+            # dplyr::select(Jurisdiction, GeoID,  Date, RegimenCompleted_Total, RegimenCompleted_Total_Prev, RegimenCompleted_Total_Rate) %>%
+            # dplyr::arrange(GeoID, Date) %>% tibble::view()
+
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-
 
 
 
