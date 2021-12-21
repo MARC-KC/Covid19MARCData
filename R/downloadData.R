@@ -220,6 +220,14 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
 
     vaccCDCData <- vaccCDCData %>%
         dplyr::mutate(
+
+            # Calculate Vaccines Completed 5-11
+            RegimenCompleted_Total5to11 = RegimenCompleted_TotalGTE5 - RegimenCompleted_TotalGTE12,
+            Population_5to11 = PopulationGTE5 - PopulationGTE12,
+            RegimenCompleted_Total5to11Prop = (RegimenCompleted_Total5to11)/Population_5to11,
+            NotFullyVaccinated_5to11 = Population_5to11 - RegimenCompleted_Total5to11, #Either initiated not completed, or not initiated
+            NotFullyVaccinated_5to11Prop = NotFullyVaccinated_5to11/Population_5to11,
+
             # Calculate Vaccines Completed 12-17
             RegimenCompleted_Total12to17 = RegimenCompleted_TotalGTE12 - RegimenCompleted_TotalGTE18,
             Population_12to17 = PopulationGTE12 - PopulationGTE18,
@@ -233,6 +241,14 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
             RegimenCompleted_Total18to65Prop = (RegimenCompleted_Total18to65)/Population_18to65,
             NotFullyVaccinated_18to65 = Population_18to65 - RegimenCompleted_Total18to65,
             NotFullyVaccinated_18to65Prop = NotFullyVaccinated_18to65 / Population_18to65,
+
+            # Calculate Vaccines Initiated 5-11
+            RegimenInitiated_Total5to11 = RegimenInitiated_TotalGTE5 - RegimenInitiated_TotalGTE12,
+            RegimenInitiated_Total5to11Prop = (RegimenInitiated_Total5to11)/Population_5to11,
+            Initiated_NotCompleted_Total5to11 = RegimenInitiated_Total5to11 - RegimenCompleted_Total5to11,
+            Initiated_NotCompleted_Total5to11Prop = Initiated_NotCompleted_Total5to11 / Population_5to11,
+            Neither_Initiated_Nor_Completed_Total5to11 = Population_5to11 - RegimenInitiated_Total5to11,
+            Neither_Initiated_Nor_Completed_Total5to11Prop = Neither_Initiated_Nor_Completed_Total5to11 / Population_5to11,
 
             # Calculate Vaccines Initiated 12-17
             RegimenInitiated_Total12to17 = RegimenInitiated_TotalGTE12 - RegimenInitiated_TotalGTE18,
