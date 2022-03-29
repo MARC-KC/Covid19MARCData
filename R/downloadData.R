@@ -151,6 +151,10 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
     cdtHospData <- dplyr::full_join(cdtData, hospData, by = c("GeoID", "Date")) %>%
         marcR::coalesceJoin(showMessage = FALSE) %>%
         dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
+        dplyr::mutate(
+            BedsInpatientUsedCovid = CovidConfirmedAdult + CovidConfirmedPediatric
+            # BedsInpatientUsedCovidProportion = BedsInpatientUsedCovid/dplyr::if_else(BedsInpatientTotal == 0, NA_integer_, BedsInpatientTotal)
+        ) %>%
         dplyr::select(
             Jurisdiction, State, GeoID, Region, Date,
 
@@ -166,7 +170,8 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
             CovidNew,
             CovidICUTotal, CovidICUConfirmed, CovidICUSuspected,
             VentilatorsTotal, VentilatorsUsed, VentilatorsAvailable,
-            CovidVentilatorsUsed)
+            CovidVentilatorsUsed,
+            BedsInpatientUsedCovid, BedsInpatientTotal)
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -178,6 +183,9 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
     hospData <- hospData %>%
         dplyr::mutate(CovidNew = CovidNew24HConfirmed + CovidNew24HSuspected) %>%
         dplyr::mutate(
+            #Calculate Inpatient Beds used by COVID
+            BedsInpatientUsedCovid = CovidConfirmedAdult + CovidConfirmedPediatric,
+
             #Calculate Used by Other Columns
             BedsUsedOther = (BedsUsed - CovidTotal),
             BedsICUUsedOther = (BedsICUUsed - CovidICUTotal),
@@ -202,7 +210,8 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
             CovidICUTotalProportion = CovidICUTotal/dplyr::if_else(BedsICUTotal == 0, NA_integer_, BedsICUTotal),
             VentilatorsAvailableProportion = VentilatorsAvailable/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal),
             VentilatorsUsedOtherProportion = VentilatorsUsedOther/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal),
-            CovidVentilatorsUsedProportion = CovidVentilatorsUsed/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal)
+            CovidVentilatorsUsedProportion = CovidVentilatorsUsed/dplyr::if_else(VentilatorsTotal == 0, NA_integer_, VentilatorsTotal),
+            BedsInpatientUsedCovidProportion = BedsInpatientUsedCovid/dplyr::if_else(BedsInpatientTotal == 0, NA_integer_, BedsInpatientTotal)
         )
 
     #HospitalTotal based on a 3 week window so that it can adapt to reporting over time
@@ -274,7 +283,18 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
             Unvaccinated_TotalGTE65 = PopulationGTE65 - RegimenInitiated_TotalGTE65,
             Unvaccinated_Total18to65Prop = Unvaccinated_TotalGTE65 / PopulationGTE65,
             NotFullyVaccinated_GTE65 = PopulationGTE65 - RegimenCompleted_TotalGTE65,
-            NotFullyVaccinated_GTE65Prop = NotFullyVaccinated_GTE65 / PopulationGTE65
+            NotFullyVaccinated_GTE65Prop = NotFullyVaccinated_GTE65 / PopulationGTE65,
+
+            # Calculate Boosters 12-17
+            Boosted_Total12to17 = Boosted_TotalGTE12 - Boosted_TotalGTE18,
+            Boosted_Total12to17Prop = (Boosted_Total12to17)/Population_12to17,
+
+            # Calculate Boosters 18 - 65
+            Boosted_Total18to65 = Boosted_TotalGTE18 - Boosted_TotalGTE65,
+            Boosted_Total18to65Prop = (Boosted_Total18to65)/Population_18to65,
+
+            # Calculate Boosters GTE65
+            Boosted_TotalGTE65Prop = (Boosted_TotalGTE65)/PopulationGTE65
 
         )
 
@@ -284,22 +304,24 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
     message(crayon::blue("Calculating 7 and 14 day rolling averages."))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     varTable <- tibble::tribble(
-        ~variable,                  ~Avg,         ~Total,     ~CalcString,
-        "CasesNew",                 TRUE,         TRUE,       NA,
-        "DeathsNew",                TRUE,         TRUE,       NA,
-        "TestsNew",                 TRUE,         TRUE,       NA,
-        "CovidNew",                 TRUE,         TRUE,       NA,
-        "CovidTotal",               TRUE,         TRUE,       NA,
-        "BedsUsedOther",            TRUE,         TRUE,       "BedsUsed - CovidTotal",
-        "BedsAvailable",            TRUE,         TRUE,       NA,
-        "CovidICUTotal",            TRUE,         FALSE,      NA,
-        "BedsICUUsedOther",         TRUE,         FALSE,      "BedsICUUsed - CovidICUTotal",
-        "BedsICUAvailable",         TRUE,         FALSE,      NA,
-        "CovidVentilatorsUsed",     TRUE,         FALSE,      NA,
-        "VentilatorsUsedOther",     TRUE,         FALSE,      "VentilatorsUsed - CovidVentilatorsUsed",
-        "VentilatorsAvailable",     TRUE,         FALSE,      NA,
-        "HospitalsReporting",       TRUE,         TRUE,       NA,
-        "HospitalsTotal",           TRUE,         TRUE,       NA
+        ~variable,                               ~Avg,         ~Total,     ~CalcString,
+        "CasesNew",                              TRUE,         TRUE,       NA,
+        "DeathsNew",                             TRUE,         TRUE,       NA,
+        "TestsNew",                              TRUE,         TRUE,       NA,
+        "CovidNew",                              TRUE,         TRUE,       NA,
+        "CovidTotal",                            TRUE,         TRUE,       NA,
+        "BedsUsedOther",                         TRUE,         TRUE,       "BedsUsed - CovidTotal",
+        "BedsAvailable",                         TRUE,         TRUE,       NA,
+        "CovidICUTotal",                         TRUE,         FALSE,      NA,
+        "BedsICUUsedOther",                      TRUE,         FALSE,      "BedsICUUsed - CovidICUTotal",
+        "BedsICUAvailable",                      TRUE,         FALSE,      NA,
+        "CovidVentilatorsUsed",                  TRUE,         FALSE,      NA,
+        "VentilatorsUsedOther",                  TRUE,         FALSE,      "VentilatorsUsed - CovidVentilatorsUsed",
+        "VentilatorsAvailable",                  TRUE,         FALSE,      NA,
+        "HospitalsReporting",                    TRUE,         TRUE,       NA,
+        "HospitalsTotal",                        TRUE,         TRUE,       NA,
+        "BedsInpatientUsedCovid",                TRUE,         FALSE,      NA,
+        "BedsInpatientTotal",                    TRUE,         FALSE,      NA
     )
 
 

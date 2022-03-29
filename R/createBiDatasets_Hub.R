@@ -80,7 +80,8 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
         dplyr::left_join(dplyr::mutate(cdtHosp7DayRollingData,
                                        TestsPositiveNew7DayAvgProportion = CasesNew7DayTotal/dplyr::if_else(TestsNew7DayTotal == 0, NA_integer_, TestsNew7DayTotal),
                                        DeathsToCases7DayProportion = DeathsNew7DayTotal/dplyr::if_else(CasesNew7DayTotal == 0, NA_integer_, CasesNew7DayTotal),
-                                       HospsToCases7DayProportion = CovidNew7DayTotal/dplyr::if_else(CasesNew7DayTotal == 0, NA_integer_, CasesNew7DayTotal)),
+                                       HospsToCases7DayProportion = CovidNew7DayTotal/dplyr::if_else(CasesNew7DayTotal == 0, NA_integer_, CasesNew7DayTotal),
+                                       BedsInpatientUsedCovid7DayAvgProportion = BedsInpatientUsedCovid7DayAvg/dplyr::if_else(BedsInpatientTotal7DayAvg ==0, NA_real_, BedsInpatientTotal7DayAvg)),
                          dplyr::mutate(Covid19MARCData::popTable,
                                        PopulationTestStandard = (ceiling(Population / 100000) * 150),
                                        PositiveTestStandardProportion = 0.05,
@@ -108,7 +109,8 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
             PositiveTestStandardProportion, PositiveTestStandard, KPI_PositiveTests,
             CovidNew7DayTotal, CovidNew7DayAvg,
             HospitalsReporting7DayTotal, HospitalsReporting7DayAvg,
-            HospitalsTotal7DayTotal, HospitalsTotal7DayAvg
+            HospitalsTotal7DayTotal, HospitalsTotal7DayAvg,
+            BedsInpatientUsedCovid7DayAvg, BedsInpatientTotal7DayAvg, BedsInpatientUsedCovid7DayAvgProportion
         )
 
 
@@ -133,7 +135,8 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
     bi_7DayRollingLagHosp <- bi_7DayRolling %>%
         dplyr::select(Jurisdiction, State, Region, GeoID, Date,
                       CovidNew7DayTotal, CovidNew7DayAvg,
-                      HospitalsReporting7DayTotal, HospitalsReporting7DayAvg, HospitalsTotal7DayTotal, HospitalsTotal7DayAvg) %>%
+                      HospitalsReporting7DayTotal, HospitalsReporting7DayAvg, HospitalsTotal7DayTotal, HospitalsTotal7DayAvg,
+                      BedsInpatientUsedCovid7DayAvg, BedsInpatientTotal7DayAvg, BedsInpatientUsedCovid7DayAvgProportion) %>%
         dplyr::filter(Date <= (max(Date) - lagDaysHosp))
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -513,5 +516,5 @@ createBiDatasets_Hub <- function(baseDataList = getBaseCovidData(), lagDaysCDT =
 
 }
 
-
+# test = createBiDatasets_Hub(baseDataList = getBaseCovidData(), lagDaysCDT = 10, lagDaysHosp = 2)
 
