@@ -26,13 +26,11 @@ rollingXdayCalcs <- function(df, dateCol, calcCol, Xdays = 7, total = TRUE, aver
         }
     }
 
-
     df <- as.data.frame(df)
-    df_sep <- tibble::tibble(dfXDay = purrr::map(1:nrow(df), ~dplyr::filter(df, !!rlang::sym(dateCol) <= df[.x,dateCol] & !!rlang::sym(dateCol) >= df[.x,dateCol] - (Xdays - 1) & GeoID == df[.x,"GeoID"])))
+    df_dt = data.table::as.data.table(df)
+    df_sep <- tibble::tibble(dfXDay = purrr::map2(df[[dateCol]], df[['GeoID']], ~as.data.frame(df_dt[(df_dt[[dateCol]] <= .x) & (df_dt[[dateCol]] >= (.x - (Xdays - 1))) & (df_dt[['GeoID']] == .y),])))
 
     out <- purrr::map_dfc(1:length(calcCol), function(measureID) {
-
-
 
         out <- df_sep %>% dplyr::mutate(
             measureData = purrr::map(dfXDay, ~na.omit(.x[[calcCol[measureID]]])),
@@ -52,8 +50,6 @@ rollingXdayCalcs <- function(df, dateCol, calcCol, Xdays = 7, total = TRUE, aver
             out <- dplyr::select(out, avg)
             names(out) <- glue::glue("{calcCol[measureID]}{Xdays}Day{c('Avg')}")
         }
-
-
 
         return(out)
     })
