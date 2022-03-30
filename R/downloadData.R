@@ -218,7 +218,7 @@ getBaseCovidData <- function(baseDataList = downloadAllCovidAPIData()) {
     hospData_dt = data.table::as.data.table(hospData)
     hospData <- hospData %>%
             dplyr::mutate(
-                HospitalsTotal = purrr::map2_int(GeoID, Date, ~hospData_dt[GeoID == .x & Date >= .y - 10 & Date <= .y + 10][['HospitalsReporting']] %>% max(., na.rm = TRUE) %>% as.integer())
+                HospitalsTotal = purrr::map2_int(GeoID, Date, ~hospData_dt[(hospData_dt[['GeoID']] == .x) & (hospData_dt[['Date']] >= .y - 10) & (hospData_dt[['Date']] <= .y + 10),][['HospitalsReporting']] %>% max(., na.rm = TRUE) %>% as.integer())
             )
     #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
