@@ -23,7 +23,7 @@ SGC_14DaySummary <- function(df_14DayRolling, lagDays = 7) {
 
     #Add Population (Per-Capita) Calculations
     df <- df %>%
-        dplyr::left_join(y = dplyr::select(Covid19MARCInternal::jurisdictionTable, GeoID, Population), by = "GeoID") %>%
+        dplyr::left_join(y = dplyr::select(Covid19MARCData::popTable, GeoID, Population), by = "GeoID") %>%
         dplyr::mutate(
             CasesNew14DayTotalPer100K = CasesNew14DayTotal / Population * 100000
         )
